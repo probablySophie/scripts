@@ -1,0 +1,18 @@
+{
+    "$schema": "https://raw.githubusercontent.com/devcontainers/spec/refs/heads/main/schemas/devContainer.base.schema.json",
+    "name": "PowerShell MSGraph",
+    "build": {
+        "dockerfile": "powershell.dockerfile"
+    },
+    "customizations": {
+        "vscode": {}
+    },
+    "remoteEnv": {
+        "PODMAN_USERNS": "keep-id"
+    },
+    "forwardPorts": [
+        4321
+    ],
+    "workspaceFolder": "/workspaces",
+    "runArgs": []
+}
