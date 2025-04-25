@@ -1,0 +1,15 @@
+# https://hub.docker.com/_/nginx
+
+services:
+  web:
+    image: nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./proxy.conf:/etc/nginx/conf.d/proxy.conf
+      # - wherever/you/want:/usr/share/nginx/html
+    restart: ${RESTART}
+    env_file: config.env
+    environment:
+      - NGINX_HOST=${HOST_NAME}
+      - NXINX_PORT=80
