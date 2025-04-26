@@ -1,0 +1,11 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json
+
+services:
+  radicale:
+    restart: always
+    ports: 
+      - "5232:5232"
+    volumes:
+      - ./radical.conf:/etc/radicale/config
+      - ./users:/etc/radicale/users
+      - ./storage:/var/lib/radicale/collections
