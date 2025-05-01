@@ -4,7 +4,7 @@ $groupId = Read-Host "The Group's ID: ";
 $groupMembers = Get-MgGroupMember -GroupId $groupId -all
 
 $users = @()
-ForEach (user in $groupMembers)
+ForEach ($user in $groupMembers)
 {
     $users += Get-MgUser -UserId $user.id
 }
