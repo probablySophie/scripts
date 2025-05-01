@@ -2,6 +2,7 @@ param($param1)
 
 function Connect-Mg
 {
+    Import-Module Microsoft.Graph
     Connect-MgGraph -Scopes "User.ReadWrite.All","Group.ReadWrite.All"
 }
 
