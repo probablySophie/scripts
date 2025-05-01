@@ -14,5 +14,6 @@
         4321
     ],
     "workspaceFolder": "/workspaces",
-    "runArgs": []
+    "runArgs": [],
+    "containerUser": "0"
 }
