@@ -1,0 +1,139 @@
+{
+    "type": "AdaptiveCard",
+    "$schema": "https://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.5",
+    "body": [
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": "auto",
+                    "items": [
+                        {
+                            "type": "Badge",
+                            "text": "@{variables('DataCard_Button_Text')}",
+                            "size": "Large"
+                            "style": "@{variables('DataCard_Button_Style')}",
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "[@{workflow()?['tags']['flowDisplayName']}](@{concat('https://make.powerautomate.com/environments/', workflow()?['tags']['environmentName'], '/flows/', workflow()?['name'])})",
+                            "wrap": true,
+                            "size": "Large",
+                            "weight": "Bolder",
+                            "horizontalAlignment": "Center"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "List 1",
+                            "wrap": true,
+                            "weight": "Bolder"
+                        },
+                        {
+                            "type": "FactSet",
+                            "facts": [
+                                {
+                                    "title": "To Make",
+                                    "value": "@{variables('Items to Make List1')}"
+                                },
+                                {
+                                    "title": "Existing",
+                                    "value": "@{variables('Existing Item List1')}"
+                                },
+                                {
+                                    "title": "Made",
+                                    "value": "@{variables('Items Made List1')}"
+                                }
+                            ]
+                        }
+                    ],
+                    "style": "emphasis",
+                    "roundedCorners": true
+                },
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "List 2",
+                            "wrap": true,
+                            "weight": "Bolder"
+                        },
+                        {
+                            "type": "FactSet",
+                            "facts": [
+                                {
+                                    "title": "To Make",
+                                    "value": "@{variables('Items to Make List2')}"
+                                },
+                                {
+                                    "title": "Existing",
+                                    "value": "@{variables('Existing Item List2')}"
+                                },
+                                {
+                                    "title": "Made",
+                                    "value": "@{variables('Items Made List2')}"
+                                }
+                            ]
+                        }
+                    ],
+                    "style": "emphasis",
+                    "roundedCorners": true
+                }
+            ]
+        },
+        {
+            "type": "TextBlock",
+            "text": "This is run [#@{workflow()?['run']['name']}](@{concat('https://make.powerautomate.com/environments/', workflow()?['tags']['environmentName'], '/flows/', workflow()?['name'],'/runs/',workflow()?['run']['name'])})",
+            "wrap": true
+        },
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Flow Started: @{variables('Time Started')}",
+                            "wrap": true,
+                            "size": "Small"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Last Updated: @{convertFromUtc(utcNow(), 'YOUR TIMEZONE HERE', 'h:mm tt')}",
+                            "wrap": true,
+                            "size": "Small"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

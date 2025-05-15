@@ -1,0 +1,36 @@
+{
+    "type": "AdaptiveCard",
+    "$schema": "https://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.5",
+    "body": [
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "[@{workflow()?['tags']['flowDisplayName']}](@{concat('https://make.powerautomate.com/environments/', workflow()?['tags']['environmentName'], '/flows/', workflow()?['name'])})",
+                            "wrap": true,
+                            "size": "Large",
+                            "weight": "Bolder",
+                            "horizontalAlignment": "Center"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "TextBlock",
+            "text": "The Flow has started, but is still setting up...",
+            "wrap": true
+        },
+        {
+            "type": "TextBlock",
+            "text": "Run [#@{workflow()?['run']['name']}](@{concat('https://make.powerautomate.com/environments/', workflow()?['tags']['environmentName'], '/flows/', workflow()?['name'],'/runs/',workflow()?['run']['name'])})",
+            "wrap": true
+        }
+    ]
+}

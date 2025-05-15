@@ -1,0 +1,36 @@
+{
+    "type": "Container",
+    "id": "HeadingContainer",
+    "items": [
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": "auto",
+                    "items": [
+                        {
+                            "type": "Badge",
+                            "text": "@{variables('DataCard_Button_Text')}",
+                            "size": "Large",
+                            "style": "@{variables('DataCard_Button_Style')}"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "[@{workflow()?['tags']['flowDisplayName']}](@{concat('https://make.powerautomate.com/environments/', workflow()?['tags']['environmentName'], '/flows/', workflow()?['name'])})",
+                            "wrap": true,
+                            "size": "Large",
+                            "weight": "Bolder"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
