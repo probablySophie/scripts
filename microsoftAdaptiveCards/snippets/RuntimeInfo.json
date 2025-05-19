@@ -35,7 +35,7 @@
                     "items": [
                         {
                             "type": "TextBlock",
-                            "text": "Runtime: @{dateDifference(variables('Time Started'), utcNow())}",
+                            "text": "Runtime: @{formatDateTime(dateDifference(variables('Time Started'), utcNow()), 'HH:mm:ss')}",
                             "wrap": true,
                             "size": "Small"
                         }
