@@ -1,6 +1,6 @@
 {
     "type": "Container",
-    "id": "HeadingContainer",
+    "id": "TitleBadgeContainer",
     "items": [
         {
             "type": "ColumnSet",
@@ -13,7 +13,7 @@
                             "type": "Badge",
                             "text": "@{variables('DataCard_Button_Text')}",
                             "size": "Large",
-                            "style": "@{variables('DataCard_Button_Style')}"
+                            "style": "Accent"
                         }
                     ]
                 },
