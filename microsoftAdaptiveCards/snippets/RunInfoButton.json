@@ -1,0 +1,21 @@
+[
+    {
+        "type": "ActionSet",
+        "actions": [
+            {
+                "type": "Action.ToggleVisibility",
+                "title": "Run Info",
+                "iconUrl": "icon:info",
+                "targetElements": [
+                    "InfoContainer"
+                ]
+            }
+        ]
+    },
+    {
+        "type": "Container",
+        "id": "InfoContainer",
+        "isVisible": false,
+        "items": [ ]
+    }
+]
