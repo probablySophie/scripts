@@ -1,0 +1,68 @@
+{
+    "type": "AdaptiveCard",
+    "$schema": "https://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.5",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "Skies @{outputs('Get_forecast_for_today')?['body/responses/daily/day/cap']} with a @{outputs('Get_forecast_for_today')?['body/responses/daily/precip']}% chance of rain",
+            "wrap": true,
+            "spacing": "None"
+        },
+        {
+            "type": "Table",
+            "verticalCellContentAlignment": "Top",
+            "firstRowAsHeader": false,
+            "spacing": "Small",
+            "columns": [
+                {
+                    "width": 1
+                },
+                {
+                    "width": 1
+                }
+            ],
+            "rows": [
+                {
+                    "type": "TableRow",
+                    "cells": [
+                        {
+                            "type": "TableCell",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "High: @{concat(outputs('Get_forecast_for_today')?['body/responses/daily/tempHi'], outputs('Get_forecast_for_today')?['body/units/temperature'])}",
+                                    "wrap": true,
+                                    "spacing": "None"
+                                },
+                                {
+                                    "type": "TextBlock",
+                                    "text": "Low: @{concat(outputs('Get_forecast_for_today')?['body/responses/daily/tempLo'], outputs('Get_forecast_for_today')?['body/units/temperature'])}",
+                                    "wrap": true,
+                                    "spacing": "None"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "TableCell",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "Max Windspeed: @{outputs('Get_forecast_for_today')?['body/responses/daily/day/windSpd']} @{outputs('Get_forecast_for_today')?['body/units/speed']}",
+                                    "wrap": true,
+                                    "spacing": "None"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "TextBlock",
+            "text": "Sunset will be at @{convertFromUtc(replace(outputs('Get_forecast_for_today')?['body/responses/almanac/sunset'], '+00:00', 'Z'), variables('Timezone'), 'h:mm tt')} with the moon in @{outputs('Get_forecast_for_today')?['body/responses/almanac/moonPhase']}",
+            "wrap": true,
+            "spacing": "Small"
+        }
+    ]
+}
