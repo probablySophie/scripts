@@ -15,7 +15,7 @@ function __git_pull_all
 		fi
 		printf "\033[7m$file\033[0m "
 		# printf "AAAA\n";
-		if git -C "$(pwd)/$file" pull ; then
+		if git -C "$(pwd)/$file" pull --recurse-submodules ; then
 			printf "";
 		else
 			errors+=($file)
