@@ -26,3 +26,25 @@ Wants the variables: 'Time Started' and 'Timezone'
 Will need `#InfoContainer`'s `items: []` replaced
 
 
+### Elements
+
+Pasteable flow elements
+
+#### Variables
+
+[Time Started](./elements/Variable_Time_Started.json), useful for in-flow reporting.  Uses `trigger()?['startTime']`  
+[Timezone](./elements/Variable_Timezone.json), useful for making outputed dates nice to read [non-comprehensive list](https://learn.microsoft.com/windows-hardware/manufacture/desktop/default-time-zones)   
+#### Meta Info Compose
+
+Or you can stick everything into one compose element with:
+```json
+{
+    "startTime": "@{utcNow()}",
+    "triggerTime": "@{trigger()?['startTime']}",
+    "timezone": "https://learn.microsoft.com/en-us/dotnet/api/microsoft.azure.management.monitor.models.timewindow.timezone?view=azure-dotnet-legacy",
+    "link": {
+        "flow": "@{concat('https://make.powerautomate.com/environments/', workflow()?['tags']['environmentName'], '/flows/', workflow()?['name'])}",
+        "run": "@{concat('https://make.powerautomate.com/environments/', workflow()?['tags']['environmentName'], '/flows/', workflow()?['name'],'/runs/',workflow()?['run']['name'])}"
+    }
+}
+```
