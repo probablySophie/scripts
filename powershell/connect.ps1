@@ -20,8 +20,8 @@ if ( $PSBoundParameters.Keys.Count -eq 1 )
             Connect-ExchangeOnline -Device
         }
         "graph" {
-            Write-Host "Importing Graph..."
-            Import-Module Microsoft.Graph
+            # Write-Host "Importing Graph..."
+            # Import-Module Microsoft.Graph
             Write-Host "Connecting..."
             if (($suppressWelcome -ne $null ) -and ($suppressWelcome -eq $true))
             {
