@@ -29,7 +29,7 @@ switch ($choice.ToLower())
     "site" {
         # Connect to a given site URL
         Connect-PnPOnline -Url "$(Read-Host -Prompt 'Site URL')" -Interactive  -ClientId "$env:PNPClientID"
-        $pnpsite = Get-PnpWeb
+        $Global:pnpsite = Get-PnpWeb
         Write-Host "Saved site into `$pnpsite";
     }
 
@@ -45,7 +45,7 @@ switch ($choice.ToLower())
             | % {$i=0}{ [PsCustomObject]@{Num=$i;Name=$_.Title;} ;$i++} `
             | Format-Table;
         # Then ask the user which index they'd like
-        $pnplist = $pnplists[$(Read-Host -Prompt "Your Chosen Site's num")];
+        $Global:pnplist = $pnplists[$(Read-Host -Prompt "Your chosen list's num")];
         Write-Host "Saved '$($pnplist.Title)' into `$pnplist";
     }
 
@@ -54,7 +54,7 @@ switch ($choice.ToLower())
         if ( $pnpsite -eq $null ) { Write-Host "`$pnpsite is null!"; return }
         if ( $pnplist -eq $null ) { Write-Host "`$pnplist is null!"; return }
 
-        $pnplistitems = Get-PnpListItem -List $pnplist;
+        $Global:pnplistitems = Get-PnpListItem -List $pnplist;
         Write-Host "Saved $($pnplistitems.Length) items from '$($pnplist.Title)' into `$pnplistitems";
     }
 
