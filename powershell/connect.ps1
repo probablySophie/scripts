@@ -25,11 +25,11 @@ if ( $PSBoundParameters.Keys.Count -eq 1 )
             Write-Host "Connecting..."
             if (($suppressWelcome -ne $null ) -and ($suppressWelcome -eq $true))
             {
-                Connect-MgGraph -Scopes $GRAPH_SCOPES -NoWelcome
+                Connect-MgGraph -Scopes $GRAPH_SCOPES -NoWelcome -UseDeviceCode
             }
             else
             {
-                Connect-MgGraph -Scopes $GRAPH_SCOPES
+                Connect-MgGraph -Scopes "User.ReadWrite.All","Group.ReadWrite.All","Mail.Read" -UseDeviceCode
             }
         }
         "pnp" {
