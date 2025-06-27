@@ -28,7 +28,7 @@ Will need `#InfoContainer`'s `items: []` replaced
 
 ### Elements
 
-Pasteable flow elements
+Pasteable power automate flow elements
 
 #### Variables
 
