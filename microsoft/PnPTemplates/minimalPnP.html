@@ -1,0 +1,20 @@
+<content id="data-content">
+	<style>.item { display: flex; gap: 1em; }</style>
+    <div class="template">
+        <ul class="template--custom">
+			{{! eachIndex gives us the current index as `index` and the current item as `item`}}
+            {{#eachIndex data.items}}
+				<div class="item">
+					<pre>{{index}}</pre> <pre>{{ JSONstringify item }}</pre>
+				</div>
+            {{/eachIndex}}
+        </ul>
+    </div>
+</content>
+
+
+<content id="placeholder-content">
+	{{#times @root.properties.paging.itemsCountPerPage}}
+		<p>This is placeholder content</p>
+	{{/times}}
+</content>

@@ -1,0 +1,28 @@
+<style>
+	.message_info {
+		display: flex;
+		gap: 1rem;
+	}
+</style>
+
+{{! Get email messages }}
+<mgt-get resource="/me/messages" scopes="mail.read">
+	{{! For each value in the returned array }}
+	<template data-type="value">
+		<a href="{{webLink}}"><span>{{subject}}</span></a>
+		<div class="message_info">
+			<pre data-if="hasAttachments">Has Attachments</pre><pre data-else>No Attachments</pre>
+			<pre>{{receivedDateTime}}</pre>
+			<pre>{{importance}}</pre>
+			<pre data-if="isRead">Read</pre><pre data-else>Unread</pre>
+			<pre>{{from}}</pre>
+			<pre>{{flag}}</pre>
+		</div>
+	</template>
+
+	<template>
+		<pre>{{ JSON.stringify(value, null, 2) }}</pre>
+	</template>
+</mgt-get>
+
+

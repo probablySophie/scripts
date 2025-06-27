@@ -1,0 +1,54 @@
+{{! Shows your personal agenda for 1 day with links to the (web) calendar event & online meeting room (if present) }}
+<content id="data-content">
+	<style>
+		div[data-generated="template"]:has(.button_container) {
+			position: relative;
+			.button_container {
+				position: absolute;
+				top: -2em;
+				right: 0px;
+				display: flex;
+				flex-direction: row-reverse;
+				gap: .5em;
+			}
+		}
+		a pnp-icon i {
+			font-size: 2em;
+			text-decoration: none;
+		}
+		a:has(pnp-icon i) {
+			text-decoration: none;
+			color: var(--event-subject-color,var(--color-sub1,#323130));
+			&:hover {
+				color: {{@root.theme.palette.themePrimary}};
+			}
+		}
+	</style>
+
+	<div class="template">
+		<mgt-agenda
+			date="{{date}}" {{!The PnP template will fill in the date}}
+			days=1 {{!And only events from that date please}}
+			>
+			{{! This appears below every event & doesn't require we recreate the event template itself}}
+			<template data-type="event-other">
+				<div class="button_container">
+					<a href="\{{event.webLink}}" target="_blank" title="View in your Calendar" class="template_calendar">
+						<pnp-icon data-name="Calendar"></pnp-icon>
+					</a>
+					{{! Only displays if the event.onlineMeetingUrl isn't null }}
+					<a data-if="\{{event.onlineMeetingUrl}}" href="\{{event.onlineMeetingUrl}}" target="_blank" title="Join online meeting">
+						<pnp-icon data-name="TeamsLogo"></pnp-icon>
+					</a>
+				</div>
+			</template>
+			<template data-type="no-data">
+				<div class="event">
+					<div class="event-details-container">
+						<div class="event-subject">Nothing on today!</div>
+					</div>
+				</div>
+			</template>
+		</mgt-agenda>
+	</div>
+</content>
