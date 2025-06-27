@@ -34,15 +34,16 @@ switch ($choice.ToLower())
             | % {$i=0}{ [PsCustomObject]@{Num=$i;Name=$_.DisplayName;URL=$_.WebUrl} ;$i++} `
             | Format-Table;
         # Then ask the user which index they'd like
-        $site = $sites[$(Read-Host -Prompt "Your Chosen Site's num")];
+        $Global:site = $sites[$(Read-Host -Prompt "Your Chosen Site's num")];
         # And output it for them :)
         print_if_not_null $site "site"
     }
 
     "list" {
         if ($site -eq $null) {
-            Write-Host "`$site is null!  Exiting";
-            return
+            # Try get a site
+            ./get_graph.ps1 "site"
+            if ($site -eq $null) { return }
         }
         Write-Host "`nGetting lists from site '$($site.DisplayName)'";
         $__filter = Read-Host -Prompt 'Display Name Filter (blank for all)';
@@ -50,7 +51,7 @@ switch ($choice.ToLower())
         $siteLists `
             | % {$i=0}{ [PsCustomObject]@{Num=$i;Name=$_.DisplayName;URL=$_.WebUrl} ;$i++} `
             | Format-Table;
-        $list = $siteLists[$(Read-Host -Prompt "Your Chosen List's num")];
+        $Global:list = $siteLists[$(Read-Host -Prompt "Your Chosen List's num")];
         print_if_not_null $list "list"
     }
 
@@ -63,7 +64,7 @@ switch ($choice.ToLower())
             Write-Host "`$list is null!  Exiting";
             return
         }
-        $listItems = Get-MgSiteListItem -SiteId $site.id -ListId $list.id -All -ExpandProperty Fields
+        $Global:listItems = Get-MgSiteListItem -SiteId $site.id -ListId $list.id -All -ExpandProperty Fields
         Write-Host "Stored $($listItems.length) items from '$($list.DisplayName)' into `$listItems"
     }
 
