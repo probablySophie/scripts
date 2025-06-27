@@ -29,7 +29,7 @@ if ( $PSBoundParameters.Keys.Count -eq 1 )
             }
             else
             {
-                Connect-MgGraph -Scopes "User.ReadWrite.All","Group.ReadWrite.All","Mail.Read" -UseDeviceCode
+                Connect-MgGraph -Scopes "User.ReadWrite.All","Group.ReadWrite.All" -UseDeviceCode
             }
         }
         "pnp" {
