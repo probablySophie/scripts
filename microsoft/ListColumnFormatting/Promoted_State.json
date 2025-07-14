@@ -1,0 +1,51 @@
+{
+    "$schema": "https://developer.microsoft.com/json-schemas/sp/v2/column-formatting.schema.json",
+    "elmType": "div",
+    "style": {
+        "box-sizing": "border-box",
+        "padding": "0 2px",
+        "overflow": "hidden",
+        "text-overflow": "ellipsis"
+    },
+    "txtContent": {
+        "operator": ":",
+        "operands": [
+            {
+                "operator": "==",
+                "operands": [
+                    "[$PromotedState]",
+                    0
+                ]
+            },
+            "Site Page",
+            {
+                "operator": ":",
+                "operands": [
+                    {
+                        "operator": "==",
+                        "operands": [
+                            "[$PromotedState]",
+                            1
+                        ]
+                    },
+                    "Unpublished News",
+                    {
+                        "operator": ":",
+                        "operands": [
+                            {
+                                "operator": "==",
+                                "operands": [
+                                    "[$PromotedState]",
+                                    2
+                                ]
+                            },
+                            "Published News",
+                            ""
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}
+
