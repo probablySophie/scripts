@@ -1,0 +1,88 @@
+{
+    "$schema": "https://developer.microsoft.com/json-schemas/sp/v2/column-formatting.schema.json",
+    "elmType": "div",
+    "inlineEditField": "@currentField",
+    "children": [
+        {
+            "elmType": "div",
+            "style": { "display": "flex", "flex-direction": "column", "margin-top": "2px", "margin-bottom": "2px" },
+            "children": [
+                {
+                    "elmType": "div",
+                    "children": [
+                        {
+                            "elmType": "div",
+                            "style": { "display": "flex", "flex-wrap": "wrap" },
+                            "children": [
+                                {
+                                    "elmType": "div",
+                                    "forEach": "_person in @currentField",
+                                    "style": {
+                                        "display": "=if(@currentField,'flex','none')",
+                                        "flex-direction": "row",
+                                        "align-items": "center",
+                                        "white-space": "nowrap",
+                                        "border-radius": "14px",
+                                        "margin": "4px"
+                                    },
+                                    "attributes": {
+                                        "class": "=if([$_person.email]==@me,'ms-bgColor-themeLighter ms-fontColor-themeDarker','ms-bgColor-neutralLight ms-fontColor-neutralPrimary')"
+                                    },
+                                    "defaultHoverField": "[$_person]",
+                                    "children": [
+                                        {
+                                            "elmType": "img",
+                                            "style": {
+                                                "width": "24px",
+                                                "height": "24px",
+                                                "border-radius": "50%"
+                                            },
+                                            "attributes": {
+                                                "src": "=getUserImage([$_person.email],'small')"
+                                            }
+                                        },
+                                        {
+                                            "elmType": "div",
+                                            "txtContent": "[$_person.title]",
+                                            "style": {
+                                                "padding-left": "6px",
+                                                "padding-right": "10px"
+                                            },
+                                            "attributes": {
+                                                "class": "ms-fontSize-s"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "elmType": "div",
+                    "style": {
+                        "display": "=if(length(@currentField.email)==0,'flex','none')",
+                        "align-items": "center",
+                        "margin": "3px",
+                        "cursor": "pointer"
+                    },
+                    "children": [
+                        {
+                            "elmType": "span",
+                            "txtContent": "+ Assign to Me",
+                            "attributes": {
+                                "class": "ms-fontColor-themePrimary ms-fontColor-themeDarker--hover"
+                            },
+                            "customRowAction": {
+                                "action": "setValue",
+                                "actionInput": {
+                                    "AssignedTo": "=appendTo(@currentField.email,@me)"
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

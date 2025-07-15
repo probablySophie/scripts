@@ -1,0 +1,65 @@
+{
+    "$schema": "https://developer.microsoft.com/json-schemas/sp/v2/column-formatting.schema.json",
+    "elmType": "div",
+    "style": {
+        "display": "=if(@currentField,'flex','none')",
+        "flex-flow": "row",
+        "align-items": "center",
+        "gap": "5px",
+        "padding-right": "5px"
+    },
+    "children": [
+        {
+            "elmType": "div",
+            "txtContent": "@currentField.title",
+            "defaultHoverField": "@currentField",
+            "attributes": {
+                "class": "ms-bgColor-neutralLight ms-fontColor-neutralPrimary"
+            },
+            "style": {
+                "padding": "3px 7px",
+                "border-radius": "14px",
+                "text-align": "center"
+            }
+        },
+        {
+            "elmType": "a",
+            "attributes": {
+                "href": "='https://teams.microsoft.com/l/chat/0/0?users=' + @currentField.email",
+                "target": "_blank"
+            },
+            "children": [
+                {
+                    "elmType": "div",
+                    "attributes": {
+                        "iconName": "TeamsLogo",
+                        "class": "ms-fontSize-42 ms-fontWeight-regular ms-fontColor-themePrimary",
+                        "title": "='Message ' + @currentField.title + ' on Teams'"
+                    },
+                    "style": {
+                        "font-size": "20px"
+                    }
+                }
+            ]
+        },
+        {
+            "elmType": "a",
+            "attributes": {
+                "href": "='mailto:' + @currentField.email + '?subject=Task status&body=Hey, how is your task coming along?.\r\n---\r\n' + @currentField.title + '\r\nClick this link for more info. http://contoso.sharepoint.com/sites/ConferencePrep/Tasks/Prep/DispForm.aspx?ID=' + [$ID]"
+            },
+            "children": [
+                {
+                    "elmType": "div",
+                    "attributes": {
+                        "iconName": "OutlookLogo",
+                        "class": "ms-fontSize-42 ms-fontWeight-regular ms-fontColor-themePrimary",
+                        "title": "='Send ' + @currentField.title + ' a new email'"
+                    },
+                    "style": {
+                        "font-size": "20px"
+                    }
+                }
+            ]
+        }
+    ]
+}
