@@ -11,7 +11,7 @@
                     "items": [
                         {
                             "type": "TextBlock",
-                            "text": "Flow Started: @{convertFromUtc(variables('Time Started'), variables('Timezone'), 'h:mm tt')}",
+                            "text": "Flow Started: @{convertFromUtc(outputs('Flow_Info')?['time/runstart'], outputs('Flow_Info')?['timezone'], 'h:mm tt')}",
                             "wrap": true,
                             "size": "Small"
                         }
@@ -23,7 +23,7 @@
                     "items": [
                         {
                             "type": "TextBlock",
-                            "text": "Last Updated: @{convertFromUtc(utcNow(), variables('Timezone'), 'h:mm tt')}",
+                            "text": "Last Updated: @{convertFromUtc(utcNow(), outputs('Flow_Info')?['timezone'], 'h:mm tt')}",
                             "wrap": true,
                             "size": "Small"
                         }
@@ -35,7 +35,7 @@
                     "items": [
                         {
                             "type": "TextBlock",
-                            "text": "Runtime: @{formatDateTime(dateDifference(variables('Time Started'), utcNow()), 'HH:mm:ss')}",
+                            "text": "Runtime: @{formatDateTime(dateDifference(convertFromUtc(outputs('Flow_Info')?['time/runstart'], utcNow()), 'HH:mm:ss')}",
                             "wrap": true,
                             "size": "Small"
                         }

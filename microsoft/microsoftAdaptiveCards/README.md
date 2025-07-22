@@ -19,7 +19,7 @@ Wants the variable: 'Timezone'
 Its probably good to replace the whole button with a variable  
 
 [Runtime Info](./snippets/RuntimeInfo.json)  
-Wants the variables: 'Time Started' and 'Timezone'  
+Wants the compose `Flow Info` to exist with the contents of `FlowInfo.json`  
 ![](./snippets/RuntimeInfo.png)  
 
 [Run info button](./snippets/RunInfoButton.json) - A button to show more about the current run  
@@ -28,23 +28,7 @@ Will need `#InfoContainer`'s `items: []` replaced
 
 ### Elements
 
-Pasteable power automate flow elements
-
-#### Variables
-
-[Time Started](./elements/Variable_Time_Started.json), useful for in-flow reporting.  Uses `trigger()?['startTime']`  
-[Timezone](./elements/Variable_Timezone.json), useful for making outputed dates nice to read [non-comprehensive list](https://learn.microsoft.com/windows-hardware/manufacture/desktop/default-time-zones)   
-#### Meta Info Compose
-
-Or you can stick everything into one compose element with:
-```json
-{
-    "startTime": "@{utcNow()}",
-    "triggerTime": "@{trigger()?['startTime']}",
-    "timezone": "https://learn.microsoft.com/en-us/dotnet/api/microsoft.azure.management.monitor.models.timewindow.timezone?view=azure-dotnet-legacy",
-    "link": {
-        "flow": "@{concat('https://make.powerautomate.com/environments/', workflow()?['tags']['environmentName'], '/flows/', workflow()?['name'])}",
-        "run": "@{concat('https://make.powerautomate.com/environments/', workflow()?['tags']['environmentName'], '/flows/', workflow()?['name'],'/runs/',workflow()?['run']['name'])}"
-    }
-}
-```
+1. Make a new Compose element.  
+2. Call it `Flow Info`
+3. Paste in the contents of (`FlowInfo.json`)[./elements/FlowInfo.json]
+4. Set the `"timezone"` variable to [your current timezone](https://learn.microsoft.com/en-us/dotnet/api/microsoft.azure.management.monitor.models.timewindow.timezone?view=azure-dotnet-legacy")
