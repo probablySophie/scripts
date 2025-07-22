@@ -8,10 +8,6 @@ function __found_nothing
     Write-Host "`t list";
     Write-Host "`t listitems"
 }
-if ( $choice -eq $null ) {
-    __found_nothing
-    return
-}
 
 function print_if_not_null
 {
@@ -67,6 +63,20 @@ function get_pnp()
     }
 }
 
-get_pnp $choice
+if ( $choice -eq $null ) {
+    __found_nothing
 
+    $options = [System.Management.Automation.Host.ChoiceDescription[]](
+        (New-Object System.Management.Automation.Host.ChoiceDescription "&Site", "A SharePoint Site"),
+        (New-Object System.Management.Automation.Host.ChoiceDescription "&List", "A SharePoint Site List"),
+        (New-Object System.Management.Automation.Host.ChoiceDescription "&Items", "Items from a SharePoint list") )
+    $result = $host.ui.PromptForChoice("Get-Graph", "Which would you like to get?", $options, 0)
+    switch ($result) {
+        0 { get_pnp "site" }
+        1 { get_pnp "list" }
+        2 { get_pnp "listitems" }
+    }
+} else {
+    get_pnp "$choice"
+}
 
