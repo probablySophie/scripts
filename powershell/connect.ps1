@@ -30,7 +30,7 @@ function Connect
             }
             else
             {
-                Connect-MgGraph -Scopes "User.ReadWrite.All","Group.ReadWrite.All" -UseDeviceCode
+                Connect-MgGraph -Scopes "User.ReadWrite.All","Group.ReadWrite.All","Sites.Read.All","Application.Read.All" -UseDeviceCode
             }
         }
         "pnp" {
