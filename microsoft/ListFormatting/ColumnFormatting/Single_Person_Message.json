@@ -33,11 +33,8 @@
                     "elmType": "div",
                     "attributes": {
                         "iconName": "TeamsLogo",
-                        "class": "ms-fontSize-42 ms-fontWeight-regular ms-fontColor-themePrimary",
+                        "class": "ms-fontSize-20 ms-fontWeight-regular ms-fontColor-themePrimary",
                         "title": "='Message ' + @currentField.title + ' on Teams'"
-                    },
-                    "style": {
-                        "font-size": "20px"
                     }
                 }
             ]
@@ -52,11 +49,8 @@
                     "elmType": "div",
                     "attributes": {
                         "iconName": "OutlookLogo",
-                        "class": "ms-fontSize-42 ms-fontWeight-regular ms-fontColor-themePrimary",
+                        "class": "ms-fontSize-20 ms-fontWeight-regular ms-fontColor-themePrimary",
                         "title": "='Send ' + @currentField.title + ' a new email'"
-                    },
-                    "style": {
-                        "font-size": "20px"
                     }
                 }
             ]

@@ -1,0 +1,146 @@
+{
+    "$schema": "https://developer.microsoft.com/json-schemas/sp/v2/column-formatting.schema.json",
+    "elmType": "div",
+    "children": [
+        {
+            "elmType": "span",
+            "txtContent": "@currentField",
+            "style": { "border-radius": "1em", "padding": "5px 10px 5px 10px", "height": "fit-content" },
+            "attributes": { "class": "sp-row-button ms-bgColor-neutralTertiary--hover ms-fontColor-gray30--hover " }
+        },
+        {
+            "elmType": "div",
+            "style": { "display": "=if(@currentField == 'Unassigned', 'block', 'none')" },
+            "children": [
+                {
+                    "elmType": "span",
+                    "txtContent": ""
+                }
+            ]
+        },
+        {
+            "elmType": "div",
+            "style": { "display": "=if(@currentField == '', 'block', 'none')" },
+            "children": [
+                {
+                    "elmType": "button"
+                }
+            ]
+        }
+    ],
+    "customCardProps": {
+        "isBeakVisible": true,
+        "openOnEvent": "click",
+        "directionalHint": "rightCenter",
+        "formatter": {
+            "elmType": "div",
+            "style": { "display": "flex", "flex-direction": "column", "min-width": "200px", "min-height": "200px", "border-radius": "1em" },
+            "children": [
+                {
+                    "elmType": "div",
+                    "style": { "display": "flex", "align-items": "baseline", "justify-content": "flex-start", "width": "100%", "gap": "5%" },
+                    "attributes": { "class": "sp-field-borderBottomSolid ms-borderColor-communicationTint40" },
+                    "children": [
+                        {
+                            "elmType": "span",
+                            "txtContent": "='#' + [$ID]",
+                            "attributes": { "class": "ms-font-xxl" }
+                        },
+                        {
+                            "elmType": "span",
+                            "txtContent": "[$Title]",
+                            "attributes": { "class": "ms-font-l" }
+                        }
+                    ]
+                },
+                {
+                    "elmType": "div",
+                    "style": { "display": "flex", "flex-direction": "column", "width": "100%", "flex-grow": "1", "box-sizing": "border-box", "padding": ".5em" },
+                    "children": [
+                        {
+                            "elmType": "div",
+                            "children": [
+                                {
+                                    "elmType": "span",
+                                    "txtContent": "Status: "
+                                },
+                                {
+                                    "elmType": "span",
+                                    "txtContent": "@currentField"
+                                }
+                            ]
+                        },
+                        {
+                            "elmType": "div",
+                            "style": { "flex-grow": "1" }
+                        },
+                        {
+                            "elmType": "button",
+                            "txtContent": "Click here to mark assigned",
+                            "style": { "display": "=if(@currentField == 'Unassigned' && [$AssignedTo.title] != '', 'block', 'none')",
+                                "border-radius": "1em", "padding": "5px 10px 5px 10px", "height": "fit-content", "width": "fit-content" },
+                            "attributes": { "class": "sp-row-button ms-bgColor-neutralLighter--hover" },
+                            "customRowAction": {
+                                "action": "setValue",
+                                "actionInput": {
+                                    "Status": "Assigned"
+                                }
+                            }
+                        },
+                        {
+                            "elmType": "button",
+                            "txtContent": "Click here to assign task",
+                            "style": { "display": "=if(@currentField == 'Unassigned', 'block', 'none')",
+                                "border-radius": "1em", "padding": "5px 10px 5px 10px", "height": "fit-content", "width": "fit-content" },
+                            "attributes": { "class": "sp-row-button ms-bgColor-neutralLighter--hover" },
+                            "inlineEditField": "[$AssignedTo]"
+                        },
+                        {
+                            "elmType": "button",
+                            "txtContent": "Mark Unassigned",
+                            "style": { "display": "=if([$AssignedTo.title] == '' && @currentField != 'Unassigned', 'block', 'none')",
+                                "border-radius": "1em", "padding": "5px 10px 5px 10px", "height": "fit-content", "width": "fit-content" },
+                            "attributes": { "class": "sp-row-button ms-bgColor-neutralLighter--hover" },
+                            "customRowAction": {
+                                "action": "setValue",
+                                "actionInput": {
+                                    "Status": "Unassigned"
+                                }
+                            }
+                        },
+                        {
+                            "elmType": "div",
+                            "txtContent": "Mark Complete",
+                            "style": { "display": "=if(@currentField != 'Unassigned' && @currentField != 'Complete', 'block', 'none')",
+                                "border-radius": "1em", "padding": "5px 10px 5px 10px", "height": "fit-content", "width": "fit-content" },
+                            "attributes": { "class": "sp-row-button ms-bgColor-neutralLighter--hover" },
+                            "customRowAction": {
+                                "action": "setValue",
+                                "actionInput": {
+                                    "Status": "Complete",
+                                    "CompletedBy": "@me",
+                                    "Completed": "=getYear(@now)+'-'+padStart(toString(getMonth(@now)+1),2,'0')+'-'+padStart(toString(getDate(@now)),2,'0') + 'T' + toLocaleTimeString(@now)"
+                                }
+                            }
+                        },
+                        {
+                            "elmType": "div",
+                            "txtContent": "Reopen",
+                            "style": { "display": "=if(@currentField == 'Complete', 'block', 'none')",
+                                "border-radius": "1em", "padding": "5px 10px 5px 10px", "height": "fit-content", "width": "fit-content" },
+                            "attributes": { "class": "sp-row-button ms-bgColor-neutralLighter--hover" },
+                            "customRowAction": {
+                                "action": "setValue",
+                                "actionInput": {
+                                    "Status": "=if([$AssignedTo.title] == '', 'Unassigned', 'Assigned')",
+                                    "CompletedBy": "",
+                                    "Completed": ""
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

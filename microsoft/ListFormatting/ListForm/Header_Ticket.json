@@ -1,0 +1,125 @@
+{
+    "elmType": "div",
+    "attributes": {
+        "class": "ms-borderColor-neutralTertiary"
+    },
+    "style": {
+        "width": "99%",
+        "border-width": "0px",
+        "border-bottom-width": "1px",
+        "border-style": "solid",
+        "margin-bottom": "16px",
+        "padding-bottom": "5px",
+        "display": "flex",
+        "flex-direction": "column",
+        "align-items": "start"
+    },
+    "children": [
+        {
+            "elmType": "div",
+            "style": {
+                "display": "flex",
+                "box-sizing": "border-box",
+                "align-items": "center"
+            },
+            "children": [
+                {
+                    "elmType": "div",
+                    "attributes": {
+                        "iconName": "Group",
+                        "class": "ms-fontSize-42 ms-fontWeight-regular ms-fontColor-themePrimary",
+                        "title": "Details"
+                    },
+                    "style": {
+                        "flex": "none",
+                        "padding": "0px",
+                        "padding-left": "0px",
+                        "height": "36px"
+                    }
+                },
+                {
+                    "elmType": "div",
+                    "attributes": {
+                        "class": "ms-fontColor-neutralSecondary ms-fontWeight-bold ms-fontSize-24"
+                    },
+                    "style": {
+                        "box-sizing": "border-box",
+                        "width": "100%",
+                        "text-align": "left",
+                        "padding": "21px 12px",
+                        "overflow": "hidden"
+                    },
+                    "children": [
+                        { "elmType": "span", "txtContent": "='#' + [$ID] + ' - ' + [$Title]" }
+                    ]
+                }
+            ]
+        },
+        {
+            "elmType": "div",
+            "style": { "display": "flex", "gap": ".5em", "align-items": "center" },
+            "children": [
+                { "elmType": "span", "txtContent": "Raised By: ", "style": { "font-size": "110%" } },
+                {
+                    "elmType": "div",
+                    "defaultHoverField": "[$Author]",
+                    "attributes": { "class": "ms-bgColor-neutralLight ms-fontColor-neutralPrimary" },
+                    "style": {
+                        "display": "flex",
+                        "align-items": "center",
+                        "gap": "5px",
+                        "border-radius": "2em"
+                    },
+                    "children": [
+                        {
+                            "elmType": "img",
+                            "attributes": {
+                                "src": "=getUserImage([$Author.email], 'small')",
+                                "title": "[$Author.title]"
+                            },
+                            "style": {
+                                "border-radius": "2em",
+                                "width": "2em"
+                            }
+                        },
+                        { "elmType": "span", "txtContent": "[$Author.title]" },
+                        { "elmType": "span", "txtContent": "" }
+                    ]
+                },
+                {
+                    "elmType": "a",
+                    "attributes": {
+                        "href": "='https://teams.microsoft.com/l/chat/0/0?users=' + [$Author.email]",
+                        "target": "_blank"
+                    },
+                    "children": [
+                        {
+                            "elmType": "div",
+                            "attributes": {
+                                "iconName": "TeamsLogo",
+                                "class": "ms-fontSize-20 ms-fontWeight-regular ms-fontColor-themePrimary",
+                                "title": "='Message ' + [$Author.title] + ' on Teams'"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "elmType": "a",
+                    "attributes": {
+                        "href": "='mailto:' + [$Author.email] + '?subject=' + [$ID] + ' - ' + [$Title]"
+                    },
+                    "children": [
+                        {
+                            "elmType": "div",
+                            "attributes": {
+                                "iconName": "OutlookLogo",
+                                "class": "ms-fontSize-20 ms-fontWeight-regular ms-fontColor-themePrimary",
+                                "title": "='Send ' + [$Author.title] + ' a new email'"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

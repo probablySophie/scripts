@@ -1,0 +1,46 @@
+{
+    "elmType": "div",
+    "style": { "display": "flex", "gap": "1em", "justify-content": "flex-end", "width": "100%", "padding": "5px 10px", "box-sizing": "border-box" },
+    "attributes": { "class": "ms-fontColor-neutralSecondaryAlt" },
+    "children": [
+        {
+            "elmType": "div",
+            "style": { "cursor": "pointer", "gap": "5px", "align-items": "center",
+                "display": "=if([$_CommentCount] == '', 'none', 'flex')" },
+            "customRowAction": { "action": "defaultClick" },
+            "attributes": { "class": " ms-fontColor-neutralPrimary--hover" },
+            "children": [
+                {
+                    "elmType": "span", "attributes": { "iconName": "Comment" }
+                },
+                {
+                    "elmType": "span",
+                    "txtContent": "=if([$_CommentCount] == '' , 0 ,[$_CommentCount])"
+                }
+            ]
+        },
+        {
+            "elmType": "div",
+            "style": { "cursor": "pointer", "gap": "3px", "align-items": "center",
+                "display": "=if([$Attachments] == '1', 'flex', 'none')" },
+            "customRowAction": { "action": "defaultClick" },
+            "attributes": { "class": " ms-fontColor-neutralPrimary--hover" },
+            "children": [
+                {
+                    "elmType": "span", "attributes": { "iconName": "Attach" }
+                }
+            ]
+        },
+        {
+            "elmType": "div",
+            "style": { "cursor": "pointer", "display": "flex", "gap": "5px", "align-items": "center" },
+            "customRowAction": { "action": "share" },
+            "attributes": { "class": " ms-fontColor-neutralPrimary--hover" },
+            "children": [
+                {
+                    "elmType": "span", "attributes": { "iconName": "Share" }
+                }
+            ]
+        }
+    ]
+}

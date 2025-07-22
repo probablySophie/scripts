@@ -1,0 +1,27 @@
+{
+    "$schema": "https://developer.microsoft.com/json-schemas/sp/v2/column-formatting.schema.json",
+    "elmType": "div",
+    "style": {
+        "grid-row": "inherit",
+        "grid-column": "calc( 10 + var(--html-grid-num-column-offset) )"
+    },
+    "defaultHoverField": "@currentField",
+    "inlineEditField": "@currentField",
+    "children": [
+        {
+            "elmType": "div",
+            "attributes": {
+                "class": "personDisplayPill_f9c53c12"
+            },
+            "children": [
+                {
+                    "elmType": "span",
+                    "txtContent": "=if(@currentField.title == '', '[$Author.title]', '@currentField.title')",
+                    "attributes": {
+                        "class": "personDisplayName_f9c53c12"
+                    }
+                }
+            ]
+        }
+    ]
+}
