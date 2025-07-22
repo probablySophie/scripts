@@ -1,3 +1,4 @@
 .env
 powershell/data
 bash/*.json
+powershell/temp
