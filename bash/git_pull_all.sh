@@ -30,7 +30,7 @@ function __git_pull_all
 					continue
 				fi
 				if [[ -d "$file2/.git" ]]; then
-					files+=("${file2/$(pwd)\//}");
+					files+=("${file2/"$(pwd)/"/}");
 				fi
 			done
 
@@ -39,8 +39,13 @@ function __git_pull_all
 		# Print the file name as black on white
 		printf "\033[7m$file\033[0m "
 
+		local command="git -C "$filepath" pull --recurse-submodules"
+		if [[ "$1" == "push" ]]; then
+			command="git -C "$filepath" push --recurse-submodules" 
+		fi
+
 		# Try & pull the folder
-		if git -C "$filepath" pull --recurse-submodules ; then
+		if $command; then
 		# if true; then
 			success+=($file)
 			# Success :)
@@ -73,5 +78,5 @@ function __git_pull_all
 	fi
 }
 
-__git_pull_all
+__git_pull_all $1
 unset __git_pull_all
