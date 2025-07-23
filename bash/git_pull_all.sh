@@ -5,25 +5,50 @@ function __git_pull_all
 	local errors=();
 	local success=();
 	local skipped=();
-	for file in "${files[@]}"; do
+
+	local i=0;
+	while [[ "${files[$i]}" != "" ]]; do
+		local file="${files[$i]}";
+		$(( i++ )) &> /dev/null;
+
 		filepath="$(pwd)/$file";
+		
 		if [[ -f "$filepath" ]]; then
-			printf "\033[7m$file\033[0m is a file so cannot be a git repo, skipping\n";
+			# printf "\033[7m$file\033[0m is a file so cannot be a git repo, skipping\n";
 			skipped+=($file)
 			continue
 		fi
+		# Does the golder have a .git folder inside of it?
 		if [[ ! -d "$filepath/.git" ]]; then
 			printf "\033[7m$file\033[0m does not have folder .git inside, skipping\n";
 			skipped+=($file)
+
+			# This folder doesn't have a .git, but do its children have .git folders?
+			local secondary_files=($filepath/*);
+			for file2 in "${secondary_files[@]}"; do
+				if [[ -f "$file2" ]]; then
+					continue
+				fi
+				if [[ -d "$file2/.git" ]]; then
+					files+=("${file2/$(pwd)\//}");
+				fi
+			done
+
 			continue
 		fi
+		# Print the file name as black on white
 		printf "\033[7m$file\033[0m "
-		# printf "AAAA\n";
-		if git -C "$(pwd)/$file" pull --recurse-submodules ; then
+
+		# Try & pull the folder
+		if git -C "$filepath" pull --recurse-submodules ; then
+		# if true; then
 			success+=($file)
+			# Success :)
 		else
 			errors+=($file)
+			# Error :(
 		fi
+		printf "\n";
 	done
 	printf "\n\n";
 	if [[ ${#skipped[@]} > 0 ]]; then
