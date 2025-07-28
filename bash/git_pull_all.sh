@@ -41,7 +41,7 @@ function __git_pull_all
 
 		local command="git -C "$filepath" pull --recurse-submodules"
 		if [[ "$1" == "push" ]]; then
-			command="git -C "$filepath" push --recurse-submodules" 
+			command="git -C "$filepath" push" 
 		fi
 
 		# Try & pull the folder
