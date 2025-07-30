@@ -42,7 +42,7 @@ function raised_by(field: string, display: string): Elm
 		elmType: "div",
 		style: { "display": display, "gap": ".5em", "align-items": "center" },
 		children: [
-			Span("Raised by: ", { style: { "font-size": "110%" } }),
+			Span("Contact: ", { style: { "font-size": "110%" } }),
 			PersonCard(field),
 			contact.teams(`[$${field}.title]`, `[$${field}.email]`),
 			contact.email(`[$${field}.title]`, `[$${field}.email]`, "[$ID] + ' - ' + [$Title]")
