@@ -1,14 +1,18 @@
 -- Simple pandoc formatting :)
 
+local current_file = debug.getinfo(1, "S").short_src;
+local path = string.match(current_file, ".*/") or "";
+
 local utils = require 'pandoc.utils'
 
--- Contitionally replace raw blocks
+-- Adds a pagebreak if it finds `<!-- pagebreak -->`
+local page_break = require ( path .. "pandoc_utils.pagebreak" );
+
+-- Conditionally replace raw blocks
 function RawBlock(el)
-	-- If HTML & matches <!-- page break --> or <!-- pagebreak -->
-	if el.format == "html" and string.match(el.text, "%<%!%-%-%s*page%s*break%s*%-%-%>") then
-		return pagebreak(el);
+	if page_break.match(el) then
+		return page_break.parse(el);
 	end
-	return el;
 end
 
 -- Conditionally replace text spans
@@ -25,7 +29,7 @@ end
 
 
 -- Add a word content control (text entry box)
-function word_contentcontrol(el)  
+function word_contentcontrol(el)
 	local tag = el.attributes['data-tag'] or "Field";
 	local text = utils.stringify(el);
 	if text == "" then text = "Click or tap here to enter text."; end
@@ -49,15 +53,4 @@ function word_contentcontrol(el)
 </w:sdt>]], tag, text);
 
 	return pandoc.RawInline('openxml', xml);
-end
-
--- Add a pagebreak
-function pagebreak(el)
-	-- We're a word doc
-	if (FORMAT == "docx") then
-		return pandoc.RawInline('openxml', string.format([[ <w:r> <w:br w:type="page"/> </w:r> ]]))
-	elseif (FORMAT == "latex") then
-		return pandoc.RawBlock("tex", "\\newpage{}")
-	end
-	return el
 end

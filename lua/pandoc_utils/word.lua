@@ -1,48 +1,98 @@
 
 -- sdtPr - structured document tag properties
 
-function word_property_kv(key, value)
-	if type(value) ~= "table" then
-		local value = value or "";
-		if value ~= "" then value = string.format([[ w:val="%s"]], value) end
-		return string.format([[<w:%s%s/>]], key, value)
-	end
-	local extra_props = "";
-	for k,v in pairs(value) do
-		extra_props = extra_props .. word_property_kv(k, v);
-	end
-	return string.format([[<w:%s> %s </w:%s>]], key, extra_props, key);
-end
+local function new_tag(name, annotation, children)
+	local Tag = {
+		name = name or "";
+		annotation = annotation or "";
+		text = "";
+		children = children or {};
+	};
+	function Tag.render(self)
+		local contents = "";
+		local annotation = self.annotation == "" and "" or " "..self.annotation;
 
--- sdt - structured document tag
-function word_sdt(content_string, properties)
-	local properties_string = "";
-	-- If we were given properties...
-	if properties ~= nil then
-		-- ...for each property...
-		for k,v in pairs(properties) do
-			-- ...add it's key/value pair to our properties string...
-			properties_string = properties_string..word_property_kv(k,v);
+		for _,v in pairs(self.children) do
+			contents = contents .. v.render(v);
 		end
-		-- ...then wrap the properties string in the `structured document tag properties` xml tags
-		properties_string = string.format([[<w:sdtPr> %s </w:sdtPr>]], properties_string);
+		if contents == "" and self.text ~= "" then
+			contents = self.text;
+		end
+		if contents == "" then
+			return string.format([[<%s%s/>]],
+				self.name,
+				annotation);
+		end
+		-- Else
+		return string.format([[<%s%s> %s </%s>]],
+			self.name,
+			annotation,
+			contents,
+			self.name);
 	end
-
-	return string.format([[<w:sdt> %s <w:sdtContent> %s </w:sdtContent> </w:sdt>]], properties_string, content_string)
+	return Tag
 end
+
 -- Add a word content control (text entry box)
-function word_contentcontrol(el)  
+local function word_contentcontrol(el)
 	local tag = el.attributes['data-tag'] or "Field";
 	local text = utils.stringify(el);
-	if text == "" then text = "Click or tap here to enter text."; end
 
-	local xml = word_sdt([[<w:r> <w:rPr> <w:rStyle w:val="PlaceholderText"/> </w:rPr> <w:t> ]]..text..[[ </w:t> </w:r>]], {
-		id = "0";
-		tag = tag;
-		placeholder = { docPart = "DefaultPlaceholder" };
-		showingPlcHdr = "";
-		text = ""
+	local sdt_pr = new_tag("w:sdtPr", "", {
+		new_tag("w:id", [[w:val="0"]]),
+		new_tag("w:tag", string.format([[w:val="%s"]]), tag),
+		new_tag("w:placeholder", "", { new_tag("w:docPart", [[w:val="DefaultPlaceholder"]]) }),
+		new_tag("w:showingPlcHdr"),
+		new_tag("w:text"),
 	});
-	print(xml);
+
+	local text_item = new_tag("w:t");
+	text_item.text = text or "Click or tap here to enter text.";
+
+	local sdt_content = new_tag("w:sdtContent", "", {
+		new_tag("w:r", "", {
+			new_tag("w:rPr", "", { new_tag("w:rStyle", [[w:val="PlaceholderText"]]) }),
+			text_item,
+		})
+	});
+
+	local base_tag = new_tag("w:sdt", "", {
+		sdt_pr,
+		sdt_content
+	});
+
+	local xml = base_tag.render(base_tag);
+
+-- 	local xml = string.format([[<w:sdt>
+-- 	<w:sdtPr>
+-- 		<w:id w:val="0"/>
+--     	<w:tag w:val="%s"/>
+--     	<w:placeholder>
+--       		<w:docPart w:val="DefaultPlaceholder"/>
+--     	</w:placeholder>
+--     	<w:showingPlcHdr/>
+-- 		<w:text/>
+--   	</w:sdtPr>
+-- 	<w:sdtContent>
+-- 		<w:r>
+-- 			<w:rPr> <w:rStyle w:val="PlaceholderText"/> </w:rPr>
+-- 			<w:t>%s</w:t>
+-- 		</w:r>
+-- 	</w:sdtContent>
+-- </w:sdt>]], tag, text);
+
 	return pandoc.RawInline('openxml', xml);
 end
+
+return {
+	match = function(el)
+		-- If its not word we don't care
+		if FORMAT ~= "docx" then; return false; end
+		if el.classes:includes('cc') then return true; end
+		return false
+	end;
+	parse = function(el)
+		if el.classes:includes('cc') then return word_contentcontrol(el); end
+		return el
+	end
+}
