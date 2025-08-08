@@ -9,7 +9,11 @@ function __found_nothing
     Write-Host "`t listitems"
 }
 
-
+# Make sure we're signed in
+if ( (Get-MgContext) -eq $null ) {
+    Write-Host "Not currently connected to Microsoft Graph.  Exiting..."
+    return
+}
 
 function GetGraph
 {
@@ -19,6 +23,7 @@ function GetGraph
         "site" {
             # Get a site name from the user & search for it
             $sites = Get-MgSite -search "$(Read-Host -Prompt 'Site Display Name')";
+            if ( $sites -eq $null ) { return }
             # Filter down to one site
             $result = . "./utils/sp_chooseFromList.ps1" $sites "Site"
             if ( $result -ne $null ) {
@@ -31,6 +36,7 @@ function GetGraph
 
         "list" {
             if ($Global:site -eq $null) { GetGraph "site" }
+            if ($Global:site -eq $null) { Write-Host "Site was still null.  Exiting"; return }
             else {
                 $result = . "./utils/choice.ps1" @( @("Yes", "Yes"), @("No", "No") ) "Use Site?" "Would you like to use the Site $($Global:site.DisplayName)?";
                 if ( $result -eq 1 ) { GetGraph "site" }
@@ -40,6 +46,7 @@ function GetGraph
             $lists = Get-MgSiteList -SiteId $Global:site.id -All;
             # Filter down to one site
             $result = . "./utils/sp_chooseFromList.ps1" $lists "List"
+            Write-Host $result
             if ( $result -ne $null ) {
                 $Global:list = $result;
                 Write-Host "The variable `$list now contains the list: $($result.displayName)"
@@ -50,6 +57,7 @@ function GetGraph
 
         "listitems" {
             if ($Global:list -eq $null) { Write-Host "`$list is empty"; GetGraph "list" }
+            if ($Global:list -eq $null) { Write-Host "`$list is still empty"; return }
             else {
                 $result = . "./utils/choice.ps1" @( @("Yes", "Yes"), @("No", "No") ) "" "Would you like to get items from the list $($Global:list.DisplayName)?";
                 if ( $result -eq 1 ) { GetGraph "list" }
