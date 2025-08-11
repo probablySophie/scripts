@@ -14,6 +14,7 @@ local utils = require 'pandoc.utils'
 -- Adds a pagebreak if it finds `<!-- pagebreak -->`
 -- local page_break = require ( path .. "pandoc_utils/pagebreak.lua" );
 local page_break = require ( "pandoc_utils.pagebreak" );
+local word_tables = require( "pandoc_utils.word.tables" );
 
 
 
@@ -24,96 +25,15 @@ local page_break = require ( "pandoc_utils.pagebreak" );
 -- 	print (elm);
 -- end
 
+
+
 function Table(elm)
 	-- print(elm.caption);
-	local i = 1;
-	local changed = false;
-	while elm.bodies[i] ~= nil do
-		local resp = TableBody(elm.bodies[i]);
-		if resp ~= nil then
-			elm.bodies[i] = resp;
-			changed = true;
-		end
-		i = i + 1;
-	end
-	if changed then
-		return elm
+	if word_tables.match(elm) then
+		return word_tables.parse(elm);
 	end
 end
 
-function TableBody(elm)
-	-- print ("Table body attributes: ");
-	-- print(elm.attr);
-
-	local i = 1;
-	local changed = false;
-	while elm.body[i] ~= nil do
-		local resp = Row(elm.body[i]);
-		if resp ~= nil then
-			changed = true;
-			elm.body[i] = resp;
-		end
-		i = i + 1;
-	end
-	if changed then
-		return elm
-	end
-end
-
-local function recurse_build_contents(content_table, new_contents)
-	if type(new_contents) ~= "table" then
-		table.insert(content_table, new_contents);
-		return content_table;
-	end
-	for _,elm in ipairs(new_contents) do
-		local my_type = pandoc.utils.type(elm);
-		if my_type == "Block" then
-			content_table = recurse_build_contents(content_table, elm.content);
-		elseif my_type == "Inline" then
-			table.insert(content_table, elm);
-		else
-			print("Uh oh "..my_type);
-		end
-	end
-	return content_table;
-end
-
--- Formatting rows if the first cell has <!-- format_row --> in it
-function Row(elm)
-
-	-- print ( e.content );
-	local formatting = false;
-	local format_string = "";
-	elm:walk {
-		RawInline = function (elm)
-			if string.match(elm.text, "format_row") ~= nil then
-				formatting = true;
-				format_string = elm.text;
-			end
-		end
-	}
-	-- If we're not formatting then we don't care :)
-	if not formatting then return end
-
-	local heading_level = string.match(format_string, "[^%w]h(%d)[^%w]");
-	if heading_level ~= nil then
-		local i = 1;
-		while elm.cells[i] ~= nil do
-			local contents = recurse_build_contents({}, elm.cells[i].contents);
-
-			elm.cells[i].contents = pandoc.List({pandoc.Header(heading_level, contents)});
-			i = i + 1;
-		end
-
-	end
-
-
-	-- print(pandoc.utils.type(elm.cells[1].contents[1]));
-	-- elm.cells[1].contents[1] = pandoc.Span(elm.cells[1].contents[1]);
-	-- elm.cells[1].contents[1].attributes['custom-style'] = "Heading 4";
-	-- elm.cells[1].contents[1].attributes['custom-style'] = "Heading 4";
-	return elm
-end
 
 -- https://pandoc.org/lua-filters.html#type-blockquote
 -- function BlockQuote(elm) end
