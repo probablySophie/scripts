@@ -1,4 +1,4 @@
-import { CardComponent } from "../card_builder";
+import { CardComponent } from "./card_builder";
 
 interface TextBlockProps extends Record<string, any>
 {

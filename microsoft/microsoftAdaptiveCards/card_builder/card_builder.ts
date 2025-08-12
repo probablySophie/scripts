@@ -1,6 +1,6 @@
-import BadgeTitle from "./ts_elements/badge_title"
-import { FactSet, Table, TextBlock } from "./ts_elements/component_functions";
-import RuntimeInfo from "./ts_elements/runtime_info"
+import BadgeTitle from "./elements/badge_title"
+import { FactSet, Table, TextBlock } from "./components";
+import RuntimeInfo from "./elements/runtime_info"
 
 export const baseCard: { type: string, "$schema": string, version: string, body: CardComponent[] } = {
 	type: "AdaptiveCard",
@@ -27,11 +27,6 @@ card.body = [
 		badge_style: "@{variables('Card Info')?['button_style']}"
 	}),
 
-	FactSet( [	
-		{ title: "Num Attachments", value: "7" },
-		{ title: "Num MRC", value: "3" },
-		{ title: "Num Other", value: "4" },
-	] ),
 
 	RuntimeInfo()
 ]

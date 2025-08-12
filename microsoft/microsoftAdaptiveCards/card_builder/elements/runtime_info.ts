@@ -1,5 +1,5 @@
 import { CardComponent } from "../card_builder"
-import { TextBlock, ColumnSet } from "./component_functions"
+import { TextBlock, ColumnSet } from "../components"
 
 interface RuntimeInfoProps
 {
@@ -31,11 +31,6 @@ export default function RuntimeInfo(props?: RuntimeInfoProps): CardComponent
 					TextBlock(`Last Updated: @{convertFromUtc(utcNow(), ${props.timezone}, 'h:mm tt')}`, { wrap: true, size: "Small" })
 				] },
 				{ width: "stretch", items: [
-					// @{formatDateTime(
-					// 	dateDifference(
-					// 		convertFromUtc(outputs('Flow_Info')?['time/runstart'], utcNow()
-					// 		), 'HH:mm:ss'
-					// )}
 					TextBlock(`Runtime: @{formatDateTime(dateDifference(${props.run_start}, utcNow()), 'HH:mm:ss')}`, { wrap: true, size: "Small" })
 				] },
 			] )

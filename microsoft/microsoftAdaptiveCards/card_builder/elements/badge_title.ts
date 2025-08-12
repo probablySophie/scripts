@@ -1,6 +1,6 @@
 
 import { type CardComponent } from "../card_builder";
-import {  Badge, ColumnSet, TextBlock } from "./component_functions";
+import {  Badge, ColumnSet, TextBlock } from "../components";
 
 interface BadgeTitleProps
 {
