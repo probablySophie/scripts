@@ -79,7 +79,7 @@ end
 
 return {
 	match = function(elm)
-		if FORMAT ~= "DOCX" then return false end
+		if FORMAT ~= "DOCX" and FORMAT ~= "docx" then return false end
 		return requests_formatting(elm);
 	end,
 	parse = function(elm)
