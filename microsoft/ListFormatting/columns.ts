@@ -14,10 +14,12 @@ export interface Attributes
 	href?: string,
 	rel?: string,
 	src?: string,
+	/** https://zerg00s.github.io/sp-modern-classes/ */
 	class?: string,
 	target?: string,
 	title?: string,
 	role?: string,
+	/** FluentUI Icons https://developer.microsoft.com/en-us/fluentui#/styles/web/icons#available-icons */
 	iconName?: string,
 	d?: string,
 	aria?: string,
@@ -31,6 +33,7 @@ export type Styles = Record<string, string>;
 
 export interface Elm
 {
+	"$schema"?: "https://developer.microsoft.com/json-schemas/sp/v2/column-formatting.schema.json",
 	elmType: string
 	txtContent?: string
 	style?: Styles
@@ -50,7 +53,31 @@ export interface Elm
 	defaultHoverField?: string
 	columnFormatterReference?: string
 	inlineEditField?: string
+	filePreviewProps?: {
+		fileTypeIconClass?: string,
+		fileTypeIconStyle?: Record<string, string>,
+		brandTypeIconClass?: string,
+		brandTypeIconStyle?: Record<string, string>
+	}
 }
+
+
+export interface CommandBar {
+	"$schema": "https://developer.microsoft.com/json-schemas/sp/v2/command-bar-formatting.schema.json",
+	commands: {
+		key: string,
+		hide?: boolean,
+		position?: number
+		primary?: boolean,
+		text?: string
+		iconName?: string,
+		title?: string,
+		selectionType?: "Primary" | "Overflow",
+		selectionModes?: ("NoSelection" | "SingleSelection" | "MultiSelection")[]
+	}[]
+	
+}
+
 
 interface ElmProps {
 	style?: Styles,
@@ -177,3 +204,70 @@ export function PersonCard(person_field_name: string): Elm
 },
 
 */
+
+export interface RowFormatter {
+	"$schema": "https://developer.microsoft.com/json-schemas/sp/v2/row-formatting.schema.json",
+	hideSelection?: boolean,
+	hideColumnHeader?: boolean,
+	rowFormatter: Elm,
+    additionalRowClass?: "",
+    groupProps?: {
+    	headerFormatter?: Elm,
+    	hideFooter?: boolean,
+    	footerFormatter?: Elm
+    }
+    hideFooter?: boolean
+    footerFormatter?: Elm
+    commandBarProps?: CommandBar
+}
+
+
+export function FilePreview( preview_size: "small" | "medium" | "large", props?: ElmProps & {
+	/** The file preview */
+	file_icon_class?: string,
+	file_icon_style?: Record<string, string>,
+	/** The little *word* or *powerpoint* icon on the preview */
+	brand_icon_class?: string,
+	brand_icon_style?: Record<string, string>,
+} ): Elm
+{	
+	return {
+		elmType: "filepreview",
+		style: props?.style,
+		attributes: { ...props?.attributes, src: `@thumbnail.${preview_size}` },
+		filePreviewProps: {
+			fileTypeIconClass: props?.file_icon_class,
+			fileTypeIconStyle: props?.file_icon_style,
+			brandTypeIconClass: props?.brand_icon_class,
+			brandTypeIconStyle: props?.brand_icon_style
+		}
+	}
+}
+
+export function FileIcon(classes?: string, style?: Record<string, string>): Elm
+{
+	return {
+		elmType: "filepreview",
+		attributes: { src: "@32" },
+		filePreviewProps: {}
+	}
+}
+
+/** Querying file_type icons directly from Microsoft's CDNs */
+export function icon_type_icon_url(icon_name: string): string
+{
+	return `https://spoprod-a.akamaihd.net/files/fabric/assets/item-types/40/${icon_name}.svg`
+}
+
+/** Make an image element */
+export function Img(source: string, props?: ElmProps): Elm
+{
+	let elm: Elm = {
+		elmType: "img",
+		...props,
+	}
+	if ( elm.attributes == null ) { elm.attributes = {} };
+	elm.attributes.src = source;
+
+	return elm
+}
