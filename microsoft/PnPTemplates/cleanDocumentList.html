@@ -1,0 +1,103 @@
+<!--
+	INFO: I want the root slots:
+		* Title - the document name/title
+		* FileType - the document's file type for the icon
+		* PreviewUrl - the URL to open the document with
+-->
+<content id="data-content">
+	<style>
+	.template_root {
+		--theme-primary: {{@root.theme.palette.themePrimary}};
+	}
+	.template_resultList {
+		padding-left: 0px;
+		list-style: none;
+	}
+	.template_result {
+		a {
+			color: inherit;
+			height: 3em;
+			display: flex;
+			align-items: center;
+			gap: 0.5em;
+			text-decoration: none;
+		}
+		.template_fileIcon {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 3em;
+			i { margin: 0px }
+			i img { vertical-align: top }
+			flex-shrink: 0;
+		}
+		.template_itemName:hover {
+			color: var(--theme-primary);
+		}
+	}
+	</style>
+	
+	<div class="template_root">
+		<ul class="template_resultList">
+			<!-- Iterate over our results -->
+			{{#each data.items as |item|}}
+				<!-- If there is a result type specific template, use that -->
+				{{#> resultTypes item=item}}
+					<!-- Fallback -->
+					<li class="template_result">
+						{{! Just open the link, don't intercept, don't open it with sharepoint}}
+						<a href="{{#if (eq (slot item @root.slots.FileType) 'url') ~}}
+							{{ join ( unique ( split ( get item ShortcutUrl ) ', ' ) ) }}
+						{{~else~}}
+							{{slot item @root.slots.PreviewUrl}}
+						{{~/if}}" target="_blank" data-interception="off" rel="noopener noreferrer">
+	                        <pnp-iconfile class="template_fileIcon" data-size="32" data-extension="{{slot item @root.slots.FileType}}"></pnp-iconfile>
+							<span class="template_itemName">{{slot item @root.slots.Title}}</span>
+						</a>
+					</li>
+				{{/resultTypes}}
+			{{/each}}
+		</ul>
+	</div>
+</content>
+
+<!-- The placeholder until the data has loaded & template has rendered -->
+<content id="placeholder-content">
+	<style>
+	.template_resultList {
+		padding-left: 0px;
+		list-style: none;
+	}
+	.template_result {
+		a {
+			height: 3em;
+			display: flex;
+			gap: 0.5em;
+			text-decoration: none;
+		}
+		.template_fileIcon {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 3em;
+			i { margin: 0px }
+			i img { vertical-align: top }
+		}
+	}
+	</style>
+
+	<div class="template_root">
+		<ul class="template_resultList">
+			<!-- Loop for the number of per-page items -->
+			{{#times @root.properties.paging.itemsCountPerPage}}
+				<li class="template_result"><a>
+					<div class="template_fileIcon">
+						<div class="placeholder--shimmer" style="width: 32px; height: 32px;"></div>
+					</div>
+					<span class="placeholder--shimmer placeholder--line template_itemName" style="width: 100%"></span>
+				</a></li>
+			{{/times}}
+		</ul>
+	</div>
+</content>
+
