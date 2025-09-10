@@ -1,3 +1,4 @@
+
 <content id="data-content">
 	<style>.item { display: flex; gap: 1em; }</style>
     <div class="template">
@@ -5,7 +6,10 @@
 			{{! eachIndex gives us the current index as `index` and the current item as `item`}}
             {{#eachIndex data.items}}
 				<div class="item">
-					<pre>{{index}}</pre> <pre>{{ JSONstringify item }}</pre>
+					{{! If linking to an item, the a element needs the fancy extra tags because Microsoft}}
+					<a href="{{ get item AutoPreviewUrl }}" target="_blank" data-interception="off" rel="noopener noreferrer">
+						<pre>{{index}}</pre> <pre>{{ JSONstringify item }}</pre>
+					</a>
 				</div>
             {{/eachIndex}}
         </ul>
