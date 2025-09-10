@@ -1,25 +1,38 @@
+---
+tags: [ "Software/M365/SharePoint" ]
+---
 
 # Microsoft/SharePoint List Formatting
 
-## List Column Formatting
 
-### Document Libraries
+## Variables
 
-[Promoted State](./ColumnFormatting/Promoted_State.json), makes the *Site Pages* document library's `Promoted State` column human readable (Site Page, Unpublished News, Published News vs. 0, 1, 2).
+### Common
 
-### List Item View
+* `[$FileRef]` - the `/sites/` relative link to the file
+* `[$FileLeafRef]` - the file name
+* `[$File_x0020_Type]` - the file type
+* `[$Created_x0020_Date]`
 
-[Multi Person Assign To Me](./ColumnFormatting/Multi_Person_Assign_To_Me.json) is for an *Assigned To* column that accepts multiple assignees and when blank has a "+ Assign to me" link.
+### Special/Unique
 
-[Single Person Message](./ColumnFormatting/Single_Person_Message.json) is for a single person column, it shows the person's name and has buttons to Teams message and email the person.  It also shows the person's details card when hovering their name.
+`.url` files (usually) have their shortcut link in `[$_ShortcutUrl]`
 
+### Group Formatting
 
-### (Kanban) Board View
+These bits are only available inside a `groupProps` element
 
-[Comments and Attachments](./BoardForm/Comments_and_Attachments.json) - show the number of comments and whether there are attachments.
+In the header
+* `@group.columnDisplayName` - the column being grouped
+* `@group.fieldData` - the grouped data
+* `@group.count` - how many items are in the group
 
-![A screenshot showing the Comment and Attachment icons](./BoardForm/Comments_and_Attachments.png)
+In the footer
+* `@columnAggregate.value` - the aggregate value
+* `@columnAggregate.columnDisplayName` - the column being grouped
+* `@columnAggregate.type` - The aggregate type
 
+Also see [`@aggregates`](https://learn.microsoft.com/en-us/sharepoint/dev/declarative-customization/view-group-formatting#aggregates).
 
 ## More
 
@@ -34,16 +47,7 @@ A super simple snippet to paste in to play with [expressions](https://learn.micr
 }
 ```
 
-### Snippets
-
-#### ID + Title
-A simple ID + Title for emails & such  
-`"=[$ID] + ' - ' + [$Title]"` -> "23 - My Cool List Item"  
-
-#### Setting a Date/Time Column to the current time
-It needs an ISO string, so: `=getYear(@now)+'-'+padStart(toString(getMonth(@now)+1),2,'0')+'-'+padStart(toString(getDate(@now)),2,'0') + 'T' + toLocaleTimeString(@now)`
-
-#### Custom Hover/Click Card
+## Custom Hover/Click Card
 
 This gets added to the element that click on or hovering over will enable it.
 ```json
@@ -82,7 +86,35 @@ Find available icons [here](https://developer.microsoft.com/en-us/fluentui#/styl
 }
 ```
 
-### Documentation
+
+## My Formatters
+
+### Column Formatters
+
+[Promoted State](./ColumnFormatting/Promoted_State.json), makes the *Site Pages* document library's `Promoted State` column human readable (Site Page, Unpublished News, Published News vs. 0, 1, 2).
+
+[Multi Person Assign To Me](./ColumnFormatting/Multi_Person_Assign_To_Me.json) is for an *Assigned To* column that accepts multiple assignees and when blank has a "+ Assign to me" link.
+
+[Single Person Message](./ColumnFormatting/Single_Person_Message.json) is for a single person column, it shows the person's name and has buttons to Teams message and email the person.  It also shows the person's details card when hovering their name.
+
+### (Kanban) Board View
+
+[Comments and Attachments](./BoardForm/Comments_and_Attachments.json) - show the number of comments and whether there are attachments.
+
+![A screenshot showing the Comment and Attachment icons](./BoardForm/Comments_and_Attachments.png)
+
+## Snippets
+
+### Row ID + Title
+A simple ID + Title for emails & such  
+`"=[$ID] + ' - ' + [$Title]"` -> "23 - My Cool List Item"  
+
+### Custom Row Action Setting a Date/Time Column to the current time
+It needs an ISO string, so: `=getYear(@now)+'-'+padStart(toString(getMonth(@now)+1),2,'0')+'-'+padStart(toString(getDate(@now)),2,'0') + 'T' + toLocaleTimeString(@now)`
+
+
+
+## Documentation
 
 * [PnP List Formatting Samples](https://pnp.github.io/List-Formatting/)  
 
@@ -90,3 +122,9 @@ Microsoft Learn
 * [List Formatting Syntax Reference](https://learn.microsoft.com/en-us/sharepoint/dev/declarative-customization/formatting-syntax-reference)  
 * [Column Formatting](https://learn.microsoft.com/en-us/sharepoint/dev/declarative-customization/column-formatting)  
 
+
+## Schemas
+
+* [Row Formatting](https://developer.microsoft.com/json-schemas/sp/v2/row-formatting.schema.json)
+* [Column Formatting](https://developer.microsoft.com/json-schemas/sp/v2/column-formatting.schema.json)
+* [Command Bar Formatting](https://developer.microsoft.com/json-schemas/sp/v2/command-bar-formatting.schema.json)
