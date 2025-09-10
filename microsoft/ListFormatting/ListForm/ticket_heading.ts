@@ -54,8 +54,8 @@ function raised_by(field: string, display: string): Elm
 
 heading.children = [
 	title,
-	raised_by("Author", "=if(toString([$Contact]) == '', 'flex', 'none')"),
-	raised_by("Contact", "=if(toString([$Contact]) == '', 'none', 'flex')"),
+	raised_by("Author", "=if(toString([$Name]) == '', 'flex', 'none')"),
+	raised_by("Name", "=if(toString([$Name]) == '', 'none', 'flex')"),
 ]
 // @ts-ignore
 await Bun.write("ticket_heading.json", JSON.stringify(heading))
