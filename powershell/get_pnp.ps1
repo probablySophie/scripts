@@ -1,6 +1,10 @@
 param ( $choice )
 Write-Host ""
 
+if ( Test-Path "utils/readEnv.ps1" ) {
+    utils/readEnv.ps1 ".env"
+}
+
 function __found_nothing
 {
     Write-Host "No input given, choices are:";
@@ -34,7 +38,7 @@ function get_pnp()
 
         "list" {
             # Make sure there's a site to pull from
-            if ( $pnpsite -eq $null ) { Write-Host "`$pnpsite is null!"; get_pnp "site"; }
+            if ( $pnpsite -eq $null ) { Write-Host "`$pnpsite is null!  Getting site..."; get_pnp "site"; }
         
             $__filter = Read-Host -Prompt 'Display Name Filter (blank for all)';
 
@@ -50,9 +54,9 @@ function get_pnp()
 
         "listitems" {
             # Make sure there's a site & a list to pull from
-            if ( $pnplist -eq $null ) { Write-Host "`$pnplist is null!"; get_pnp "list"; }
+            if ( $pnplist -eq $null ) { Write-Host "`$pnplist is null! Getting list..."; get_pnp "list"; }
 
-            $Global:pnplistitems = Get-PnpListItem -List $pnplist;
+            $Global:pnplistitems = Get-PnpListItem -List $pnplist -IncludeContentType;
             Write-Host "Saved $($pnplistitems.Length) items from '$($pnplist.Title)' into `$pnplistitems";
         }
 
