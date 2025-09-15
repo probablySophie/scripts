@@ -271,3 +271,17 @@ export function Img(source: string, props?: ElmProps): Elm
 
 	return elm
 }
+
+
+export function switch_val(switch_var: string, options: {cmp_val: string, result: string}[], default_val: string): string
+{
+	let str = ``
+	let eof_str = "";
+
+	for ( const prop of options ) {
+		str += `if(${switch_var} == ${prop.cmp_val}, ${prop.result}, `
+		eof_str += ")";
+	}
+
+	return `${str}${default_val} ${eof_str}`
+}

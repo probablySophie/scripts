@@ -1,5 +1,5 @@
 export {}
-import { Span, RowFormatter, icon_type_icon_url, Img } from "../columns";
+import { Span, RowFormatter, icon_type_icon_url, Img, switch_val } from "../columns";
 
 
 let base: RowFormatter = {
@@ -23,7 +23,14 @@ base.rowFormatter.children?.push({
 	elmType: "div",
 	style: { width: "32px", height: "32px", "margin-right": "10px", "flex-shrink": "0" },
 	children: [
-		Img(`=if([$File_x0020_Type] == 'url', '${icon_type_icon_url("link")}' , '${icon_type_icon_url(`'+[$File_x0020_Type]+'`)}')`),
+		Img("='" + icon_type_icon_url( "' + " + switch_val(
+	"[$File_x0020_Type]",
+	[
+		{ cmp_val: "'url'", result: "'link'" },
+		{ cmp_val: "'doc'", result: "'docx'" },
+	],
+	`[$File_x0020_Type]`
+) + " + '" ) + "'"),
 	]
 });
 
