@@ -13,6 +13,7 @@ tags: [ "Software/M365/SharePoint" ]
 * `[$FileLeafRef]` - the file name
 * `[$File_x0020_Type]` - the file type
 * `[$Created_x0020_Date]`
+* `[$ID]` - the item's list id
 
 ### Special/Unique
 
