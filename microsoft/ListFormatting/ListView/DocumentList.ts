@@ -19,6 +19,11 @@ let base: RowFormatter = {
 	},
 }
 
+function ifs()
+{
+	
+}
+
 base.rowFormatter.children?.push({
 	elmType: "div",
 	style: { width: "32px", height: "32px", "margin-right": "10px", "flex-shrink": "0" },
@@ -27,10 +32,22 @@ base.rowFormatter.children?.push({
 	"[$File_x0020_Type]",
 	[
 		{ cmp_val: "'url'", result: "'link'" },
-		{ cmp_val: "'doc'", result: "'docx'" },
+		{ cmp_val: ["'mp4'"], result: "'video'" },
+		{ cmp_val: ["'pdf'"], result: "'pdf'" },
+		{ cmp_val: ["'txt'"], result: "'txt'" },
+		// Spreadsheets
+		{ cmp_val: ["xls", "xlsx", "xlb", "xlc", "xlsb", "xlsm", "xlt", "xltx", "xltm", "xlm", "xla", "xll", "xlam", "xlw", "excel", "csv", "odc", "ods"].map(t => `'${t}'`), result: "'xlsx'" },
+		// Text Documents
+		{ cmp_val: ["doc", "docx", "docm", "dot", "dotx", "dotm", "odt", "docb", "wbk", "rtf", "word"].map(t => `${t}`), result: "'docx'" },
+		// Images
+		{ cmp_val: ["bmp", "dib", "gif", "ico", "jfif", "jpe", "jpeg", "jpg", "png", "svg", "tif", "tiff", "xbm", "xpm"].map(t => `'${t}'`), result: "'photo'" },
+		// Presentations
+		{ cmp_val: ["pptx", "ppt", "pot", "potx", "potm", "ppam", "ppsx", "ppsm", "sldx", "sldm", "ppa", "pps", "pptm", "odp", "powerpoint"].map(t => `'${t}'`), result: "'pptx'" },
+		// Pages
+		{ cmp_val: ["htm", "html", "aspx", "css"].map(t => `'${t}'`), result: "'html'" },
 	],
-	`[$File_x0020_Type]`
-) + " + '" ) + "'"),
+	`'genericfile'`
+) + " + '" ) + "'", { style: { "padding": "2px" } } ),
 	]
 });
 
