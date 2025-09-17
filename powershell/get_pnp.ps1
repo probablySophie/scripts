@@ -36,6 +36,12 @@ function get_pnp()
             Write-Host "Saved site into `$pnpsite";
         }
 
+        "sitepages" {
+            $Global:site_page_list = Get-PnPList | Where-Object { $_.Title -eq "Site Pages" };
+            $Global:site_pages = Get-PnpListItem -List $site_page_list;
+            Write-Host "Saved $($site_pages.length) items into `$site_pages"
+        }
+
         "list" {
             # Make sure there's a site to pull from
             if ( $pnpsite -eq $null ) { Write-Host "`$pnpsite is null!  Getting site..."; get_pnp "site"; }
@@ -73,12 +79,15 @@ if ( $choice -eq $null ) {
     $options = [System.Management.Automation.Host.ChoiceDescription[]](
         (New-Object System.Management.Automation.Host.ChoiceDescription "&Site", "A SharePoint Site"),
         (New-Object System.Management.Automation.Host.ChoiceDescription "&List", "A SharePoint Site List"),
-        (New-Object System.Management.Automation.Host.ChoiceDescription "&Items", "Items from a SharePoint list") )
+        (New-Object System.Management.Automation.Host.ChoiceDescription "&Items", "Items from a SharePoint list"),
+        (New-Object System.Management.Automation.Host.ChoiceDescription "&Pages", "A SharePoint Site's Pages")
+    )
     $result = $host.ui.PromptForChoice("Get-Graph", "Which would you like to get?", $options, 0)
     switch ($result) {
         0 { get_pnp "site" }
         1 { get_pnp "list" }
         2 { get_pnp "listitems" }
+        3 { get_pnp "sitepages" }
     }
 } else {
     get_pnp "$choice"
