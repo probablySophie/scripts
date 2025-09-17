@@ -256,7 +256,8 @@ export function FileIcon(classes?: string, style?: Record<string, string>): Elm
 /** Querying file_type icons directly from Microsoft's CDNs */
 export function icon_type_icon_url(icon_name: string): string
 {
-	return `https://spoprod-a.akamaihd.net/files/fabric/assets/item-types/40/${icon_name}.svg`
+	return `https://res-1.cdn.office.net/files/fabric/assets/item-types/24/${icon_name}.svg`;
+	// return `https://spoprod-a.akamaihd.net/files/fabric/assets/item-types/40/${icon_name}.svg`
 }
 
 /** Make an image element */
@@ -273,14 +274,32 @@ export function Img(source: string, props?: ElmProps): Elm
 }
 
 
-export function switch_val(switch_var: string, options: {cmp_val: string, result: string}[], default_val: string): string
+export function switch_val(switch_var: string, options: {cmp_val: string | string[], result: string, cmp_method?: "eq" | "startsWith"}[], default_val: string): string
 {
 	let str = ``
 	let eof_str = "";
 
 	for ( const prop of options ) {
-		str += `if(${switch_var} == ${prop.cmp_val}, ${prop.result}, `
-		eof_str += ")";
+		if ( ! Array.isArray( prop.cmp_val ) ) {
+			prop.cmp_val = [ prop.cmp_val ]
+		}
+		for ( const val of prop.cmp_val )
+		{
+			str += `if(`
+			switch( prop.cmp_method )
+			{
+				case "eq":
+				case null:
+				default:
+					str += `${switch_var} == ${val}`
+					break;
+				case "startsWith":
+					str += `startsWith(${switch_var}, ${val})`
+					break;
+			}
+			str += `, ${prop.result}, `
+			eof_str += ")";
+		}
 	}
 
 	return `${str}${default_val} ${eof_str}`
