@@ -4,6 +4,8 @@ tags: [ "Software/M365/SharePoint" ]
 
 # Microsoft/SharePoint List Formatting
 
+> [!info] Debug mode
+> Adding `debugMode: true` to an element will cause a console output showing errors in evaluation
 
 ## Variables
 
