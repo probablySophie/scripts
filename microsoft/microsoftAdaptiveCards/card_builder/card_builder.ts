@@ -22,13 +22,13 @@ let card = baseCard;
 // Num Marc
 // Num Not-marc
 
-card.body = [
-	BadgeTitle({
-		badge_style: "@{variables('Card Info')?['button_style']}"
-	}),
+// card.body = [
+// 	BadgeTitle({
+// 		badge_style: "@{variables('Card Info')?['button_style']}"
+// 	}),
 
 
-	RuntimeInfo()
-]
+// 	RuntimeInfo()
+// ]
 
 // console.log(JSON.stringify(card));

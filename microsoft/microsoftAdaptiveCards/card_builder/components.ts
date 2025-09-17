@@ -4,7 +4,8 @@ interface TextBlockProps extends Record<string, any>
 {
 	wrap?: boolean,
 	size?: "Small" | "Default" | "Medium" | "Large",
-	weight?: "Lighter" | "Default" | "Bolder"
+	weight?: "Lighter" | "Default" | "Bolder",
+	spacing?: "None" | "Small" | string,
 }
 
 export function TextBlock(text: string, props?: TextBlockProps): CardComponent
@@ -39,8 +40,11 @@ export function ColumnSet(columns: {width?: string, items: CardComponent[], vert
 	}
 }
 
+type TableCell = (CardComponent | CardComponent[]);
+type TableRow = TableCell[]
+
 type TableColumn = number;
-export function Table(rows: (CardComponent | CardComponent[])[], columns: TableColumn|TableColumn[]): CardComponent
+export function Table(rows: TableRow[], columns: TableColumn|TableColumn[]): CardComponent
 {
 	if ( !Array.isArray(columns) ) {
 		let c: number[] = [];
