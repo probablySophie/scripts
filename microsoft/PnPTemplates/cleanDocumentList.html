@@ -31,9 +31,14 @@
 			i img { vertical-align: top }
 			flex-shrink: 0;
 		}
-		.template_itemName:hover {
-			color: var(--theme-primary);
-		}
+	}
+	.pagination a {
+		color: inherit;
+		font-weight: lighter;
+	}
+	.pagination li:hover a {
+		color: var(--theme-primary);
+		text-decoration: underline;
 	}
 	</style>
 	
@@ -44,20 +49,48 @@
 				<!-- If there is a result type specific template, use that -->
 				{{#> resultTypes item=item}}
 					<!-- Fallback -->
-					<li class="template_result">
-						{{! Just open the link, don't intercept, don't open it with sharepoint}}
-						<a href="{{#if (eq (slot item @root.slots.FileType) 'url') ~}}
-							{{ join ( unique ( split ( get item ShortcutUrl ) ', ' ) ) }}
+					<li class="template_result ms-bgColor-gray10--hover ms-fontColor-themeDarkAlt--hover">
+						{{! If we're a .url or OneDrive shortcut...}}
+						<a href="{{#if (or (eq (slot item @root.slots.FileType) 'url') (eq (slot item @root.slots.FileType) 'AddToOneDrive.Shortcut') ) ~}}
+							{{#if ( get item ShortcutUrl ) }}
+								{{~ join ( unique ( split ( get item ShortcutUrl ) ', ' ) ) ~}}
+							{{else}}
+								{{#with (get item HitHighlightUrl) }}
+									{{#contains . '<ddd/>'}}
+										{{#with (replace . '<ddd/>' '')}}{{last (split . '=')}}{{/with}}
+									{{else}}
+										{{slot item @root.slots.PreviewUrl}}
+									{{/contains}}
+								{{/with}}
+							{{/if}}
 						{{~else~}}
 							{{slot item @root.slots.PreviewUrl}}
 						{{~/if}}" target="_blank" data-interception="off" rel="noopener noreferrer">
-	                        <pnp-iconfile class="template_fileIcon" data-size="32" data-extension="{{slot item @root.slots.FileType}}"></pnp-iconfile>
-							<span class="template_itemName">{{slot item @root.slots.Title}}</span>
+	                        <pnp-iconfile class="template_fileIcon" data-size="32" data-extension="{{#if (eq (slot item @root.slots.FileType) 'AddToOneDrive.Shortcut') }}
+									{{~first ( last (split ( get item Filename ) '.') 2) ~}}
+								{{else}}
+									{{~slot item @root.slots.FileType~}}
+								{{/if}}"></pnp-iconfile>
+							<span class="template_itemName"> {{slot item @root.slots.Title}}</span>
 						</a>
 					</li>
 				{{/resultTypes}}
 			{{/each}}
 		</ul>
+		{{#if @root.properties.paging.showPaging}}
+			{{#if (lt @root.properties.paging.itemsCountPerPage @root.data.totalItemsCount) }}
+			    <pnp-pagination
+			        data-total-items="{{@root.data.totalItemsCount}}"
+			        data-hide-first-last-pages="{{@root.properties.paging.hideFirstLastPages}}"
+			        data-hide-disabled="{{@root.properties.paging.hideDisabled}}"
+			        data-hide-navigation="{{@root.properties.paging.hideNavigation}}"
+			        data-range="{{@root.properties.paging.pagingRange}}"
+			        data-items-count-per-page="{{@root.properties.paging.itemsCountPerPage}}"
+			        data-current-page-number="{{@root.paging.currentPageNumber}}"
+			    >
+			    </pnp-pagination>
+			{{/if}}
+		{{/if}}
 	</div>
 </content>
 
