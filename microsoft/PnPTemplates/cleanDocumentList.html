@@ -66,11 +66,19 @@
 						{{~else~}}
 							{{slot item @root.slots.PreviewUrl}}
 						{{~/if}}" target="_blank" data-interception="off" rel="noopener noreferrer">
-	                        <pnp-iconfile class="template_fileIcon" data-size="32" data-extension="{{#if (eq (slot item @root.slots.FileType) 'AddToOneDrive.Shortcut') }}
-									{{~first ( last (split ( get item Filename ) '.') 2) ~}}
+								{{#with (slot item @root.slots.FileType) as |FileType| ~}}
+									<pnp-iconfile class="template_fileIcon" data-size="32"
+										data-extension="{{#if (eq FileType 'AddToOneDrive.Shortcut') }}
+											{{~first ( last (split ( get item Filename ) '.') 2) ~}}
+										{{else}}
+											{{~slot item @root.slots.FileType~}}
+										{{~/if~}}"
+								></pnp-iconfile>
 								{{else}}
-									{{~slot item @root.slots.FileType~}}
-								{{/if}}"></pnp-iconfile>
+									<pnp-iconfile class="template_fileIcon" data-size="32"
+									data-extension=""
+									data-is-container="true"></pnp-iconfile>
+								{{/with}}
 							<span class="template_itemName"> {{slot item @root.slots.Title}}</span>
 						</a>
 					</li>
