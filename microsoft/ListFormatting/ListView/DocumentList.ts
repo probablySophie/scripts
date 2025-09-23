@@ -20,6 +20,7 @@ let base: RowFormatter = {
 }
 
 const file_type_mappings: Record<string, string[]> = {
+	"": ["folder"],
 	"link": ["url", "link"],
 	"video": ["mp4"],
 	"pdf": ["pdf"],
