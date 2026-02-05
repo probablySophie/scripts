@@ -78,6 +78,19 @@ export interface CommandBar {
 	
 }
 
+export function Flex(children: Elm[], direction: "row" | "column", props?: ElmProps): Elm
+{
+	return {
+		elmType: "div",
+		style: {
+			"display": "flex",
+			"flex-direction": direction,
+			...( props?.style || {} )
+		},
+		attributes: props?.attributes || undefined,
+		children,
+	}
+}
 
 interface ElmProps {
 	style?: Styles,
