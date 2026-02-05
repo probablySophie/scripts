@@ -6,6 +6,7 @@ let base: RowFormatter = {
 	"$schema": "https://developer.microsoft.com/json-schemas/sp/v2/row-formatting.schema.json",
 	"hideSelection": true,
 	"hideColumnHeader": true,
+	debug: true,
 	rowFormatter: {
 		elmType: "div",
 		style: {
@@ -20,7 +21,7 @@ let base: RowFormatter = {
 }
 
 const file_type_mappings: Record<string, string[]> = {
-	"": ["folder"],
+	"folder": [""],
 	"link": ["url", "link"],
 	"video": ["mp4"],
 	"pdf": ["pdf"],
