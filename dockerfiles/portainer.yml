@@ -1,0 +1,17 @@
+version: '3.2'
+
+services:
+  portainer:
+    image: portainer/portainer-ce:lts
+    ports:
+      - "9443:9443"
+      - "8000:8000"
+    volumes:
+      - portainer_data:/data
+      - /run/podman/podman.sock:/var/run/docker.sock
+    # environment:
+    privileged: true
+    restart: always
+
+  volumes:
+      portainer_data:

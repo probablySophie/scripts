@@ -1,0 +1,18 @@
+version: '3.2'
+
+services:
+  n8n:    
+    image: n8nio/n8n
+    ports:
+      - "5678:5678"
+    volumes:
+      - n8n_data:/home/node/.n8n
+    environment:
+      - GENERIC_TIMEZONE: "UTC"
+      - TZ: "UTC"
+      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: true
+      - N8N_RUNNERS_ENABLED: true
+    restart: always
+
+  volumes:
+      n8n_data:
