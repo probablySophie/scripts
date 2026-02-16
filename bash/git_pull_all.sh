@@ -36,6 +36,13 @@ function __git_pull_all
 
 			continue
 		fi
+		# Does the git folder/repo have an origin?
+		if [[ "$(git -C "$filepath" ls-remote --get-url origin)" == "origin" ]]; then
+			printf "\033[7m$file\033[0m DOES have .git, but doesn't have remote origin.  Skipping\n";
+			skipped+=($file)
+			continue
+		fi
+	
 		# Print the file name as black on white
 		printf "\033[7m$file\033[0m "
 
