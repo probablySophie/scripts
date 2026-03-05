@@ -31,4 +31,4 @@ Will need `#InfoContainer`'s `items: []` replaced
 1. Make a new Compose element.  
 2. Call it `Flow Info`
 3. Paste in the contents of (`FlowInfo.json`)[./elements/FlowInfo.json]
-4. Set the `"timezone"` variable to [your current timezone](https://learn.microsoft.com/en-us/dotnet/api/microsoft.azure.management.monitor.models.timewindow.timezone?view=azure-dotnet-legacy")
+4. Set the `"timezone"` variable to your current timezone (run `tzutil /l` in a powershell prompt)
