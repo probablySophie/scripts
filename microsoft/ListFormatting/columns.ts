@@ -1,7 +1,8 @@
 
+export type ActionOption = "defaultClick" | "executeFlow" | "share" | "delete" | "editProps" | "openContextMenu" | "setValue" | "embed";
 export interface Action
 {
-	action: "defaultClick" | "executeFlow" | "share" | "delete" | "editProps" | "openContextMenu" | "setValue" | "embed",
+	action: ActionOption,
 	actionParams?: string,
 	actionInput?: Record<string, string>
 }
@@ -92,7 +93,7 @@ export function Flex(children: Elm[], direction: "row" | "column", props?: ElmPr
 	}
 }
 
-interface ElmProps {
+export interface ElmProps {
 	style?: Styles,
 	attributes?: Attributes
 }
