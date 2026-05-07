@@ -1,6 +1,7 @@
 {
     "displayName": "@{workflow()?['tags']['flowDisplayName']}",
     "timezone": "",
+    "userEmail": "@{trigger()?['outputs/headers/x-ms-user-email']}",
     "time": {
         "triggered": "@{trigger()?['startTime']}",
         "runStart": "@{utcNow()}"
@@ -10,4 +11,3 @@
         "currentRun": "@{concat('https://make.powerautomate.com/environments/', workflow()?['tags']['environmentName'], '/flows/', workflow()?['name'],'/runs/',workflow()?['run']['name'])}"
     }
 }
-
