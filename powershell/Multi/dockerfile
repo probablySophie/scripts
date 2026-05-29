@@ -1,0 +1,20 @@
+FROM mcr.microsoft.com/powershell:latest
+
+# podman build -f ./Multi/dockerfile -t multi_pwsh && podman run -it -v "$(pwd)":/mount multi_pwsh
+
+RUN pwsh -command "Install-Module -Name ExchangeOnlineManagement -Scope AllUsers -Repository PSGallery -Force"
+RUN pwsh -command "Install-Module -Name Microsoft.Graph -Scope AllUsers -Repository PSGallery -Force"
+RUN pwsh -command "Install-Module -Name Microsoft.Graph.Beta -Scope AllUsers -Repository PSGallery -Force"
+
+RUN mkdir -p $HOME/.config/powershell
+RUN printf "Import-Module Microsoft.Graph.Authentication \n\
+Import-Module ExchangeOnlineManagement\n\
+\n\
+function ex{ Invoke-Command { Exit } } \n\
+new-alias q ex \n\
+\n\
+cd /mount \
+" > "$HOME/.config/powershell/Microsoft.PowerShell_profile.ps1"
+
+# ENTRYPOINT [ "pwsh" "-c" ]
+CMD [ "pwsh" ]
