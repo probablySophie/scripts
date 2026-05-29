@@ -28,7 +28,7 @@ An *Office 365 Users* > *Send an HTTP Request* MS Graph request
 	"type": "OpenApiConnection",
 	"inputs": {
 		"parameters": {
-			"Uri": "https://graph.microsoft.com/v1.0/me/calendarview?startdatetime=@{convertToUtc(\r\n\tstartOfDay(\r\n\t\tconvertFromUtc(\r\n\t\t\toutputs('Flow_Info')['time/triggered'],\r\n\t\t\toutputs('Flow_Info')['timezone']\r\n\t\t)\r\n\t),\r\n  outputs('Flow_Info')['timezone']\r\n)}&enddatetime=@{convertToUtc(\n\taddDays(\n\t\tstartOfDay(\n\t\t\tconvertFromUtc(\n\t\t\t\toutputs('Flow_Info')['time/triggered'],\n\t\t\t\toutputs('Flow_Info')['timezone']\n\t\t\t)\n\t\t),\n\t\t1\n\t),\n\toutputs('Flow_Info')['timezone']\n)}",
+			"Uri": "https://graph.microsoft.com/v1.0/me/calendarview?startdatetime=@{convertToUtc(\r\n\tstartOfDay(\r\n\t\tconvertFromUtc(\r\n\t\t\toutputs('Flow_Info')['time/triggered'],\r\n\t\t\toutputs('Flow_Info')['timezone']\r\n\t\t)\r\n\t),\r\n  outputs('Flow_Info')['timezone']\r\n)}&enddatetime=@{convertToUtc(\n\taddDays(\n\t\tstartOfDay(\n\t\t\tconvertFromUtc(\n\t\t\t\toutputs('Flow_Info')['time/triggered'],\n\t\t\t\toutputs('Flow_Info')['timezone']\n\t\t\t)\n\t\t),\n\t\t1\n\t),\n\toutputs('Flow_Info')['timezone']\n)}&$orderby=start/datetime",
 			"Method": "GET",
 			"ContentType": "application/json"
 		},
