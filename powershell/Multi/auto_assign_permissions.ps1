@@ -23,9 +23,9 @@ function or_existing
 $user_prev = $user_input;
 $user_input = or_existing "Your User" $user_input
 $user = if ( ( $user -ne $null ) -and ($user_prev -eq $user_input ) ) { $user } elseif ( $user_input.IndexOf( "@" ) -ne -1 ) {
-    Get-MgUser -UserId "$user_input" -Select DisplayName, Company, Department, OfficeLocation
+    Get-MgUser -UserId "$user_input" -Select DisplayName, Company, Department, OfficeLocation, UserPrincipalName, Id
 } else {
-    Get-MgUser -Filter "(accountEnabled eq true) and (UserType eq 'Member') and (displayName eq '$user_input')" -Select DisplayName, Company, Department, OfficeLocation
+    Get-MgUser -Filter "(accountEnabled eq true) and (UserType eq 'Member') and (displayName eq '$user_input')" -Select DisplayName, Company, Department, OfficeLocation, UserPrincipalName, Id
 }
 if ( $user -eq $null -or $user.GetType().Name -ne "MicrosoftGraphUser" ) {
     Write-Error "Failed to get user from input '$user_input'";
@@ -45,14 +45,21 @@ else
     Write-Host -ForegroundColor Yellow "What team is your user in?";
     foreach ( $team in $teams ) { Write-Host "$i $team"; $i++ }
     $first = $true;
-    while ( $first -eq $true -or $ans -lt 0 -or $ans -ge $teams.Length ) { $first = $false; $ans = or_existing "Team" $ans }
-    $TEAM = $teams[$ans];
+    while ( $first -eq $true -or (($ans -lt 0 -or $ans -ge $teams.Length) -and $ans -ne "q") ) { $first = $false; $ans = or_existing "Team" $ans }
+    if ( $ans.Trim() -eq "q" ) {
+        $TEAM = $null;
+    } else {
+        $TEAM = $teams[$ans];
+    }
 }
 
 foreach ( $permission in $permissions )
 {
     if ( ( $permission.team -ne $TEAM ) -and ( $permission.team -ne "*" ) ) { continue }
     if ( ( $permission.location -ne $user.OfficeLocation ) -and ( $permission.location -ne "*" ) ) { continue }
+
+    # Because something was going wrong for... some reason?
+    $permission.'ID/Address' = $permission.'ID/Address'.Replace('"', "");
 
     Write-Host "$($permission.description)"
 
@@ -69,10 +76,14 @@ foreach ( $permission in $permissions )
     }
     elseif ( $permission.type -eq "group" )
     {
-        if ( ( Get-MgGroupMember -GroupId $permission."ID/Address" -Filter "id eq '$($user.Id)'" ) -eq $null ) {
-            Write-Host "`tAdding to group"
+        if ( ( Get-MgGroupMember -GroupId $permission."ID/Address" -Filter "id eq '$($user.Id)'" -ErrorAction Ignore ) -eq $null ) {
+            Write-Host "`tAdding to group";
             New-MgGroupMemberByRef -GroupId $permission."ID/Address" -BodyParameter @{ "@odata.id" = "https://graph.microsoft.com/v1.0/directoryObjects/$($user.Id)" }
         }
+    }
+    elseif ( $permission.type -eq "distribution" ) {
+        Add-DistributionGroupMember -Identity $permission."ID/Address" -Member $user.UserPrincipalName
+            Write-Host "`tAdding to distribution list"
     }
     else { Write-Error "Unhandled permission type '$($permission.type)'" }
 }
