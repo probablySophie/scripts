@@ -5,6 +5,15 @@ FROM mcr.microsoft.com/powershell:latest
 RUN pwsh -command "Install-Module -Name ExchangeOnlineManagement -Scope AllUsers -Repository PSGallery -Force"
 RUN pwsh -command "Install-Module -Name Microsoft.Graph -Scope AllUsers -Repository PSGallery -Force"
 RUN pwsh -command "Install-Module -Name Microsoft.Graph.Beta -Scope AllUsers -Repository PSGallery -Force"
+RUN pwsh -command "Install-Module -Name PnP.PowerShell -Scope AllUsers -Repository PSGallery -Force"
+
+# Azure CLI
+RUN apt-get update
+RUN apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release
+RUN curl -fsSL 'https://azurecliprod.blob.core.windows.net/$root/deb_install.sh' | bash
+
+# Clean up our temporary files & such
+RUN apt-get clean
 
 RUN mkdir -p $HOME/.config/powershell
 RUN printf "Import-Module Microsoft.Graph.Authentication \n\
