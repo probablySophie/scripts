@@ -18,5 +18,5 @@ if ( -not ( Test-Path "$setup_exe_path" ) ) {
 
 Copy-Item "$($PSScriptRoot)\Visio.xml" $setup_path -Force -ErrorAction Stop
 
-Start-Process "$setup_exe_path" -ArgumentList "/configure $( Join-Path $setup_path "Visio.xml" )" -Wait -PassThru
+Start-Process "$setup_exe_path" -ArgumentList "/configure $( Join-Path $setup_path "Visio.xml" )" -Wait -PassThru -NoNewWindow
 
