@@ -10,10 +10,15 @@ for filename in ./*; do
 
 	printf "$i $filename";
 
+	# Local changes/"dirty"?
+	if [[ "$(git -C "$filename" status --porcelain 2>/dev/null)" != "" ]]; then
+		printf " [+]"
+	fi
+
 	if git -C "$filename" pull --recurse-submodules > /dev/null 2>&1; then
-		printf " ${green}success";
+		printf " ${green}pull success";
 	else
-		printf " ${red}failed";
+		printf " ${red}pull failed";
 	fi
 	printf "${normal}\n";
 
